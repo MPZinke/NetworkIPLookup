@@ -2,6 +2,7 @@
 
 
 -- SUMMARY:  Types of devices.
+-- REQUIRED VALUES: ['Other', 'Mixed']
 CREATE TABLE "DeviceType"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -28,10 +29,10 @@ CREATE TABLE "IP"
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"is_reservation" BOOL NOT NULL DEFAULT FALSE,
 	"is_static" BOOL NOT NULL DEFAULT TRUE,
-	"DeviceType.id" INT NOT NULL DEFAULT 1,
-	FOREIGN KEY ("DeviceType.id") REFERENCES "DeviceType"("id"),
+	"mac" MACADDR DEFAULT NULL,
 	"Network.id" INT NOT NULL,
-	FOREIGN KEY ("Network.id") REFERENCES "Network"("id")
+	FOREIGN KEY ("Network.id") REFERENCES "Network"("id"),
+	UNIQUE("label", "Network.id")
 );
 
 
@@ -60,4 +61,15 @@ CREATE TABLE "Service"
 	FOREIGN KEY ("IP.id") REFERENCES "IP"("id")
 );
 
+
+-- SUMMARY:  Associates DeviceTypes with IPs.
+-- RELATION: <DeviceType>:<IP> N:M.
+CREATE TABLE "DeviceType-IP"
+(
+	"id" SERIAL NOT NULL PRIMARY KEY,
+	"DeviceType.id" INT NOT NULL DEFAULT 1,
+	FOREIGN KEY ("DeviceType.id") REFERENCES "DeviceType"("id"),
+	"IP.id" INT NOT NULL DEFAULT 1,
+	FOREIGN KEY ("IP.id") REFERENCES "IP"("id")
+);
 
