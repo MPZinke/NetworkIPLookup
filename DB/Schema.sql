@@ -1,13 +1,14 @@
 
-
-
--- SUMMARY:  Types of devices.
--- REQUIRED VALUES: ['Other', 'Mixed']
-CREATE TABLE "DeviceType"
-(
-	"id" SERIAL NOT NULL PRIMARY KEY,
-	"label" VARCHAR(32) NOT NULL
-);
+/***********************************************************************************************************************
+*                                                                                                                      *
+*   created by: MPZinke                                                                                                *
+*   on 2022.04.29                                                                                                      *
+*                                                                                                                      *
+*   DESCRIPTION: TEMPLATE                                                                                              *
+*   BUGS:                                                                                                              *
+*   FUTURE:                                                                                                            *
+*                                                                                                                      *
+***********************************************************************************************************************/
 
 
 -- SUMMARY:  List of Networks that are tracked.
@@ -36,20 +37,6 @@ CREATE TABLE "IP"
 );
 
 
--- SUMMARY:  IP Address Ranges for a Network.
--- RELATION: <IPRange>:<Network> N:1.
-CREATE TABLE "IPRange"
-(
-	"id" SERIAL NOT NULL PRIMARY KEY,
-	"start_address" INET NOT NULL,
-	"end_address" INET NOT NULL,
-	"label" VARCHAR(32) NOT NULL DEFAULT '',
-	"is_reservation" BOOL NOT NULL DEFAULT FALSE,
-	"Network.id" INT NOT NULL,
-	FOREIGN KEY ("Network.id") REFERENCES "Network"("id")
-);
-
-
 -- SUMMARY:  Services that runs on the device for an IP.
 -- RELATION: <Service>:<IP> N:1.
 CREATE TABLE "Service"
@@ -62,13 +49,23 @@ CREATE TABLE "Service"
 );
 
 
--- SUMMARY:  Associates DeviceTypes with IPs.
--- RELATION: <DeviceType>:<IP> N:M.
-CREATE TABLE "DeviceType-IP"
+-- SUMMARY:  Types of devices.
+-- RELATION: <Group>:<IP> N:M.
+-- REQUIRED VALUES: ['Other', 'Mixed']
+CREATE TABLE "Group"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
-	"DeviceType.id" INT NOT NULL DEFAULT 1,
-	FOREIGN KEY ("DeviceType.id") REFERENCES "DeviceType"("id"),
+	"label" VARCHAR(32) NOT NULL
+);
+
+
+-- SUMMARY:  Associates Groups with IPs.
+-- RELATION: <Group>:<IP> N:M.
+CREATE TABLE "Group-IP"
+(
+	"id" SERIAL NOT NULL PRIMARY KEY,
+	"Group.id" INT NOT NULL DEFAULT 1,
+	FOREIGN KEY ("Group.id") REFERENCES "Group"("id"),
 	"IP.id" INT NOT NULL DEFAULT 1,
 	FOREIGN KEY ("IP.id") REFERENCES "IP"("id")
 );
