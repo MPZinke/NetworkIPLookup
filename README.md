@@ -59,7 +59,14 @@ Additionally, the ping method can be used to determine if an device is active/re
 - `/v1.0/network/label/{network label}/ips/DeviceTypes/id/{DeviceTypes id}`: Get all IPs for a DeviceType
 - `/v1.0/network/label/{network label}/ips/DeviceTypes/label/{DeviceTypes label}`: Get all IPs for a DeviceType
 - `/v1.0/network/label/{network label}/ip/id/{ip id}`
+- `/v1.0/network/label/{network label}/ip/id/{ip id}/DeviceTypes/id/{DeviceTypes id}`
+- `/v1.0/network/label/{network label}/ip/id/{ip id}/DeviceTypes/label/{DeviceTypes label}`
+- `/v1.0/network/label/{network label}/ip/address/{ip address}`
+- `/v1.0/network/label/{network label}/ip/address/{ip address}/DeviceTypes/id/{DeviceTypes id}`
+- `/v1.0/network/label/{network label}/ip/address/{ip address}/DeviceTypes/label/{DeviceTypes label}`
 - `/v1.0/network/label/{network label}/ip/label/{ip label}`
+- `/v1.0/network/label/{network label}/ip/label/{ip label}/DeviceTypes/id/{DeviceTypes id}`
+- `/v1.0/network/label/{network label}/ip/label/{ip label}/DeviceTypes/label/{DeviceTypes label}`
 - `/v1.0/network/label/{network label}/ip/address/{ip address}`
 - `/v1.0/DeviceTypes`: Get all DeviceTypes
 - `/v1.0/DeviceType/id/{DeviceTypes id}`: Get DeviceType info by id

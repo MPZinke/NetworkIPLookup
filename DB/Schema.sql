@@ -15,7 +15,7 @@
 CREATE TABLE "Network"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
-	"label" VARCHAR(32) NOT NULL DEFAULT '',
+	"label" VARCHAR(32) NOT NULL DEFAULT '' UNIQUE,
 	"gateway" INET NOT NULL,
 	"netmask" INET NOT NULL
 );
@@ -33,6 +33,7 @@ CREATE TABLE "IP"
 	"mac" MACADDR DEFAULT NULL,
 	"Network.id" INT NOT NULL,
 	FOREIGN KEY ("Network.id") REFERENCES "Network"("id"),
+	UNIQUE("address", "Network.id"),
 	UNIQUE("label", "Network.id")
 );
 
@@ -45,7 +46,8 @@ CREATE TABLE "Service"
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"port" SMALLINT NOT NULL DEFAULT 80,
 	"IP.id" INT NOT NULL,
-	FOREIGN KEY ("IP.id") REFERENCES "IP"("id")
+	FOREIGN KEY ("IP.id") REFERENCES "IP"("id"),
+	UNIQUE("label", "IP.id")
 );
 
 
@@ -55,7 +57,7 @@ CREATE TABLE "Service"
 CREATE TABLE "Group"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
-	"label" VARCHAR(32) NOT NULL
+	"label" VARCHAR(32) NOT NULL UNIQUE
 );
 
 
@@ -67,6 +69,7 @@ CREATE TABLE "Group-IP"
 	"Group.id" INT NOT NULL DEFAULT 1,
 	FOREIGN KEY ("Group.id") REFERENCES "Group"("id"),
 	"IP.id" INT NOT NULL DEFAULT 1,
-	FOREIGN KEY ("IP.id") REFERENCES "IP"("id")
+	FOREIGN KEY ("IP.id") REFERENCES "IP"("id"),
+	UNIQUE("Group.id", "IP.id")
 );
 
