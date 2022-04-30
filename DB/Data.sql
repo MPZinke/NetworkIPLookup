@@ -160,6 +160,7 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Entertainment'
+JOIN "Network" ON "IP"."Network.id" = "Network"."id"
 WHERE ("IP"."label", "Network"."label") IN
 (
 	('Bedroom-TV', 'Home'),
@@ -176,6 +177,7 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Smart'
+JOIN "Network" ON "IP"."Network.id" = "Network"."id"
 WHERE ("IP"."label", "Network"."label") IN
 (
 	('Bedroom-TV', 'Home'),
@@ -192,6 +194,7 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Curtain'
+JOIN "Network" ON "IP"."Network.id" = "Network"."id"
 WHERE ("IP"."label", "Network"."label") IN
 (
 	('Bedroom-Curtain', 'Home'),
