@@ -16,8 +16,8 @@ CREATE TABLE "Network"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
 	"label" VARCHAR(32) NOT NULL DEFAULT '' UNIQUE,
-	"gateway" INET NOT NULL,
-	"netmask" INET NOT NULL
+	"gateway" VARCHAR(15) NOT NULL,
+	"netmask" VARCHAR(15) NOT NULL
 );
 
 
@@ -26,11 +26,11 @@ CREATE TABLE "Network"
 CREATE TABLE "IP"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
-	"address" INET NOT NULL,
+	"address" VARCHAR(15) NOT NULL,
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"is_reservation" BOOL NOT NULL DEFAULT FALSE,
 	"is_static" BOOL NOT NULL DEFAULT TRUE,
-	"mac" MACADDR DEFAULT NULL,
+	"mac" CHAR(16) DEFAULT NULL,
 	"Network.id" INT NOT NULL,
 	FOREIGN KEY ("Network.id") REFERENCES "Network"("id"),
 	UNIQUE("address", "Network.id"),
