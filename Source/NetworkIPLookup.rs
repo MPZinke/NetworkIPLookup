@@ -15,21 +15,24 @@
 #![allow(unused_parens)]
 
 
-mod DBInterface;
+mod Queries;
+mod QueryError;
+mod IP;
 
 
 fn main()
 {
-	match DBInterface::query_IP_id(85)
+	match Queries::query_IP_by_id(19)
 	{
-		Some(ip) =>
+		Ok(ip) =>
 		{
 			println!("It worked");
 			println!("{}", ip.to_string());
 		},
-		None =>
+		Err(error) =>
 		{
 			println!("It broke");
+			println!("{}", error);
 		}
 	}
 }
