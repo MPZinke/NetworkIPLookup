@@ -17,6 +17,9 @@ use std;
 
 // ——————————————————————————————————————————————————— ERROR ENUM ——————————————————————————————————————————————————— //
 
+// FROM: https://fettblog.eu/rust-enums-wrapping-errors/
+//  AND: https://doc.rust-lang.org/rust-by-example/error/multiple_error_types/wrap_error.html
+
 #[derive(Debug)]
 pub enum QueryError
 {
@@ -48,10 +51,19 @@ impl From<postgres::error::Error> for QueryError
     }
 }
 
+
 impl From<std::io::Error> for QueryError
 {
     fn from(err: std::io::Error) -> Self
     {
         QueryError::NotFound(err)
     }
+}
+
+
+// ———————————————————————————————————————————————— HELPER FUNCTIONS ———————————————————————————————————————————————— //
+
+pub fn NewNotFoundError(message: String) -> QueryError
+{
+	return QueryError::NotFound(std::io::Error::new(std::io::ErrorKind::NotFound, message));
 }

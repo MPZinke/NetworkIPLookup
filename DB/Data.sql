@@ -30,55 +30,55 @@ SELECT "Temp"."address", "Temp"."label", "Temp"."is_reservation", "Temp"."is_sta
 FROM
 (
 	VALUES
-	('192.168.1.2'::INET, 'Resevered-2', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.3'::INET, 'Resevered-3', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.4'::INET, 'Resevered-4', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.5'::INET, 'Resevered-5', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.6'::INET, 'Resevered-6', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.7'::INET, 'Resevered-7', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.8'::INET, 'Resevered-8', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.9'::INET, 'Resevered-9', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.10'::INET, 'Resevered-10', FALSE, TRUE, NULL::MACADDR),
+	('192.168.1.2', 'Resevered-2', FALSE, TRUE, NULL),
+	('192.168.1.3', 'Resevered-3', FALSE, TRUE, NULL),
+	('192.168.1.4', 'Resevered-4', FALSE, TRUE, NULL),
+	('192.168.1.5', 'Resevered-5', FALSE, TRUE, NULL),
+	('192.168.1.6', 'Resevered-6', FALSE, TRUE, NULL),
+	('192.168.1.7', 'Resevered-7', FALSE, TRUE, NULL),
+	('192.168.1.8', 'Resevered-8', FALSE, TRUE, NULL),
+	('192.168.1.9', 'Resevered-9', FALSE, TRUE, NULL),
+	('192.168.1.10', 'Resevered-10', FALSE, TRUE, NULL),
 	-- Livingroom
-	('192.168.1.11'::INET, 'Resevered-11', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.12'::INET, 'Resevered-12', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.13'::INET, 'Resevered-13', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.14'::INET, 'Resevered-14', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.15'::INET, 'Resevered-15', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.16'::INET, 'Resevered-16', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.17'::INET, 'Resevered-17', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.18'::INET, 'Resevered-18', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.19'::INET, 'Resevered-19', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.20'::INET, 'Resevered-20', FALSE, TRUE, NULL::MACADDR),
+	('192.168.1.11', 'Resevered-11', FALSE, TRUE, NULL),
+	('192.168.1.12', 'Resevered-12', FALSE, TRUE, NULL),
+	('192.168.1.13', 'Resevered-13', FALSE, TRUE, NULL),
+	('192.168.1.14', 'Resevered-14', FALSE, TRUE, NULL),
+	('192.168.1.15', 'Resevered-15', FALSE, TRUE, NULL),
+	('192.168.1.16', 'Resevered-16', FALSE, TRUE, NULL),
+	('192.168.1.17', 'Resevered-17', FALSE, TRUE, NULL),
+	('192.168.1.18', 'Resevered-18', FALSE, TRUE, NULL),
+	('192.168.1.19', 'Resevered-19', FALSE, TRUE, NULL),
+	('192.168.1.20', 'Resevered-20', FALSE, TRUE, NULL),
 	-- Bedroom
-	('192.168.1.21'::INET, 'Resevered-21', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.22'::INET, 'Resevered-22', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.23'::INET, 'Resevered-23', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.24'::INET, 'Resevered-24', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.25'::INET, 'Resevered-25', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.26'::INET, 'Resevered-26', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.27'::INET, 'Resevered-27', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.28'::INET, 'Resevered-28', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.29'::INET, 'Resevered-29', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.30'::INET, 'Resevered-30', FALSE, TRUE, NULL::MACADDR),
+	('192.168.1.21', 'Resevered-21', FALSE, TRUE, NULL),
+	('192.168.1.22', 'Resevered-22', FALSE, TRUE, NULL),
+	('192.168.1.23', 'Resevered-23', FALSE, TRUE, NULL),
+	('192.168.1.24', 'Resevered-24', FALSE, TRUE, NULL),
+	('192.168.1.25', 'Resevered-25', FALSE, TRUE, NULL),
+	('192.168.1.26', 'Resevered-26', FALSE, TRUE, NULL),
+	('192.168.1.27', 'Resevered-27', FALSE, TRUE, NULL),
+	('192.168.1.28', 'Resevered-28', FALSE, TRUE, NULL),
+	('192.168.1.29', 'Resevered-29', FALSE, TRUE, NULL),
+	('192.168.1.30', 'Resevered-30', FALSE, TRUE, NULL),
 	-- Kitchen
-	('192.168.1.31'::INET, 'Resevered-31', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.32'::INET, 'Resevered-32', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.33'::INET, 'Resevered-33', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.34'::INET, 'Resevered-34', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.35'::INET, 'Resevered-35', FALSE, TRUE, NULL::MACADDR),
+	('192.168.1.31', 'Resevered-31', FALSE, TRUE, NULL),
+	('192.168.1.32', 'Resevered-32', FALSE, TRUE, NULL),
+	('192.168.1.33', 'Resevered-33', FALSE, TRUE, NULL),
+	('192.168.1.34', 'Resevered-34', FALSE, TRUE, NULL),
+	('192.168.1.35', 'Resevered-35', FALSE, TRUE, NULL),
 	-- Computers
-	('192.168.1.36'::INET, 'Resevered-36', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.37'::INET, 'Resevered-37', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.38'::INET, 'Resevered-38', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.39'::INET, 'Resevered-39', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.40'::INET, 'Resevered-40', FALSE, TRUE, NULL::MACADDR),
+	('192.168.1.36', 'Resevered-36', FALSE, TRUE, NULL),
+	('192.168.1.37', 'Resevered-37', FALSE, TRUE, NULL),
+	('192.168.1.38', 'Resevered-38', FALSE, TRUE, NULL),
+	('192.168.1.39', 'Resevered-39', FALSE, TRUE, NULL),
+	('192.168.1.40', 'Resevered-40', FALSE, TRUE, NULL),
 	-- Mobile
-	('192.168.1.41'::INET, 'Resevered-41', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.42'::INET, 'Resevered-42', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.43'::INET, 'Resevered-43', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.44'::INET, 'Resevered-44', FALSE, TRUE, NULL::MACADDR),
-	('192.168.1.45'::INET, 'Resevered-45', FALSE, TRUE, NULL::MACADDR)
+	('192.168.1.41', 'Resevered-41', FALSE, TRUE, NULL),
+	('192.168.1.42', 'Resevered-42', FALSE, TRUE, NULL),
+	('192.168.1.43', 'Resevered-43', FALSE, TRUE, NULL),
+	('192.168.1.44', 'Resevered-44', FALSE, TRUE, NULL),
+	('192.168.1.45', 'Resevered-45', FALSE, TRUE, NULL)
 ) AS "Temp"("address", "label", "is_reservation", "is_static", "mac")
 JOIN "Network" ON "Network"."label" = 'Home';
 
@@ -104,32 +104,32 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'House'
-WHERE '192.168.1.2'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.11'::INET;
+WHERE '192.168.1.2' <= "IP"."address"
+AND "IP"."address" < '192.168.1.11';
 
 
 -- Bedroom
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Livingroom'
-WHERE '192.168.1.11'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.21'::INET;
+WHERE '192.168.1.11' <= "IP"."address"
+AND "IP"."address" < '192.168.1.21';
 
 
 -- Livingroom
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Bedroom'
-WHERE '192.168.1.21'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.31'::INET;
+WHERE '192.168.1.21' <= "IP"."address"
+AND "IP"."address" < '192.168.1.31';
 
 
 -- Kitchen
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Kitchen'
-WHERE '192.168.1.31'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.36'::INET;
+WHERE '192.168.1.31' <= "IP"."address"
+AND "IP"."address" < '192.168.1.36';
 
 
 -- ———————————————————————————————————————————————— GROUPS::COMPUTER ———————————————————————————————————————————————— --
@@ -138,8 +138,8 @@ AND "IP"."address" < '192.168.1.36'::INET;
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Computer'
-WHERE '192.168.1.36'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.41'::INET;
+WHERE '192.168.1.36' <= "IP"."address"
+AND "IP"."address" < '192.168.1.41';
 
 
 -- ———————————————————————————————————————————————— GROUPS::DEVICES  ———————————————————————————————————————————————— --
@@ -148,8 +148,8 @@ AND "IP"."address" < '192.168.1.41'::INET;
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Mobile'
-WHERE '192.168.1.41'::INET <= "IP"."address"
-AND "IP"."address" < '192.168.1.46'::INET;
+WHERE '192.168.1.41' <= "IP"."address"
+AND "IP"."address" < '192.168.1.46';
 
 -- ———————————————————————————————————————————— GROUPS::ENTERTAINMENT ———————————————————————————————————————————— --
 
