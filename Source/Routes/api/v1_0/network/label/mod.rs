@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.04.29                                                                                                      *
+*   on 2022.05.05                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,44 +11,20 @@
 ***********************************************************************************************************************/
 
 
-#![allow(non_snake_case)]
-#![allow(unused_parens)]
-#![allow(non_camel_case_types)]
+pub mod ip;
 
 
-use actix_web::{web, App, HttpServer, Responder};
+use actix_web::{http::header::ContentType, HttpResponse, web};
 
 
-mod IP;
-mod Network;
-mod Queries;
-mod QueryError;
-mod Routes;
+use crate::Queries::{generic_query_to_response_JSON, SELECT_Networks_by_label};
 
 
-use crate::Routes::api;
-
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()>
+// `/api/v1.0/network/label/{label}`
+pub async fn index(path: web::Path<(String)>) -> HttpResponse
 {
-	std::env::set_var("RUST_LOG", "actix_web=info");
-
-	HttpServer::new
-	(
-		||
-		{
-			App::new()
-			  .route("/", web::get().to(Routes::index))
-			  .route("/api", web::get().to(api::index))
-
-			  .route("/api/v1.0", web::get().to(api::v1_0::index))
-			  .route("/api/v1.0/network", web::get().to(api::v1_0::network::index))
-			  .route("/api/v1.0/network/label/{label}", web::get().to(api::v1_0::network::label::index))
-			  .route("/api/v1.0/network/label/{label}/ip", web::get().to(api::v1_0::network::label::ip::index))
-		}
-	)
-	  .bind("127.0.0.1:8080")?
-	  .run()
-	  .await
+	let (label) = path.into_inner();
+	let query_response = SELECT_Networks_by_label(label);
+	let body = generic_query_to_response_JSON(query_response);
+	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }

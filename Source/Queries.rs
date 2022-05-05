@@ -17,11 +17,29 @@
 
 use postgres;
 use postgres::{Client, NoTls, Row, types::ToSql};
+use serde_json;
+use serde::Serialize;
 
 
 use crate::IP::IP;
 use crate::Network::Network;
 use crate::QueryError::{NewNotFoundError, QueryError};
+
+
+pub fn generic_query_to_response_JSON<T: Serialize>(generic_query: Result<T, QueryError>) -> String
+{
+	let response_generic: T = match(generic_query)
+	{
+		Ok(response_generic) => response_generic,
+		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
+	};
+
+	match(serde_json::to_string(&response_generic))
+	{
+		Ok(response_body) => return response_body,
+		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
+	}
+}
 
 
 // ———————————————————————————————————————————————————— QUERIES  ———————————————————————————————————————————————————— //
@@ -46,6 +64,25 @@ pub fn SELECT_Networks() -> Result<Vec<Network>, QueryError>
 	  FROM "Network";
 	  "#;
 	let result: Vec<Row> = query(query_str, &[])?;
+
+	let mut networks: Vec<Network> = vec![];
+	for row in result
+	{
+		// let (label, gateway, netmask): (String)
+		networks.push(Network::new(row.get("label"), row.get("gateway"), row.get("netmask")));
+	}
+	return Ok(networks);
+}
+
+
+pub fn SELECT_Networks_by_label(label: String) -> Result<Vec<Network>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "label", "gateway", "netmask"
+	  FROM "Network"
+	  WHERE "label" = $1;
+	  "#;
+	let result: Vec<Row> = query(query_str, &[&label])?;
 
 	let mut networks: Vec<Network> = vec![];
 	for row in result

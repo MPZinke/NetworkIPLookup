@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.04                                                                                                      *
+*   on 2022.05.05                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,24 +11,16 @@
 ***********************************************************************************************************************/
 
 
-use serde_json;
-use serde::Serialize;
+pub mod v1_0;
 
 
-use crate::QueryError::QueryError;
+use actix_web::{HttpResponse, http::header::ContentType};
 
 
-pub fn generic_query_to_response_JSON<T: Serialize>(generic_query: Result<T, QueryError>) -> String
+// `/api`
+pub async fn index() -> HttpResponse
 {
-	let response_generic: T = match(generic_query)
-	{
-		Ok(response_generic) => response_generic,
-		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
-	};
-
-	match(serde_json::to_string(&response_generic))
-	{
-		Ok(response_body) => return response_body,
-		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
-	}
+	// list options: ['/api/v1.0']
+	let body = r#"{"/api/v1.0": "The current version of this API"}"#;
+	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
