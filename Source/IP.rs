@@ -1,15 +1,24 @@
 
+/***********************************************************************************************************************
+*                                                                                                                      *
+*   created by: MPZinke                                                                                                *
+*   on 2022.05.05                                                                                                      *
+*                                                                                                                      *
+*   DESCRIPTION: TEMPLATE                                                                                              *
+*   BUGS:                                                                                                              *
+*   FUTURE:                                                                                                            *
+*                                                                                                                      *
+***********************************************************************************************************************/
+
 
 use postgres::Row;
-use serde_json;
 use serde::{Deserialize, Serialize};
 
 
 use crate::Network::Network;
-use crate::QueryError::QueryError;
 
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct IP
 {
 	pub address: String,
@@ -30,11 +39,5 @@ impl IP
 		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,
 		  Network: Network::new(row.get("Network.label"),
 		  row.get("Network.gateway"), row.get("Network.netmask"))};
-	}
-
-
-	pub fn to_string(self) -> Result<String, serde_json::Error>
-	{
-		return serde_json::to_string(&self);
 	}
 }

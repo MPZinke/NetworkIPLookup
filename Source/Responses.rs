@@ -11,35 +11,22 @@
 ***********************************************************************************************************************/
 
 
-use crate::IP::IP;
+use serde_json;
+use serde::Serialize;
+
+
 use crate::QueryError::QueryError;
 
 
-pub fn IP_query_to_response_JSON(IP_query: Result<IP, QueryError>) -> String
+pub fn generic_query_to_response_JSON<T: Serialize>(generic_query: Result<T, QueryError>) -> String
 {
-	let response_IP: IP = match(IP_query)
+	let response_generic: T = match(generic_query)
 	{
-		Ok(response_IP) => response_IP,
+		Ok(response_generic) => response_generic,
 		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
 	};
 
-	match(response_IP.to_string())
-	{
-		Ok(response_body) => return response_body,
-		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
-	}
-}
-
-
-pub fn IPs_query_to_response_JSON(IPs_query: Result<Vec<IP>, QueryError>) -> String
-{
-	let response_IPs: Vec<IP> = match(IPs_query)
-	{
-		Ok(response_IPs) => response_IPs,
-		Err(error) => return format!("{{\"error\": \"{}\"}}", error)
-	};
-
-	match(serde_json::to_string(&response_IPs))
+	match(serde_json::to_string(&response_generic))
 	{
 		Ok(response_body) => return response_body,
 		Err(error) => return format!("{{\"error\": \"{}\"}}", error)

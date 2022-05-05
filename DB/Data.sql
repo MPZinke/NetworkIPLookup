@@ -104,32 +104,70 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'House'
-WHERE '192.168.1.2' <= "IP"."address"
-AND "IP"."address" < '192.168.1.11';
+WHERE "IP"."address" IN
+(
+	'192.168.1.2',
+	'192.168.1.3',
+	'192.168.1.4',
+	'192.168.1.5',
+	'192.168.1.6',
+	'192.168.1.7',
+	'192.168.1.8',
+	'192.168.1.9',
+	'192.168.1.10'
+);
 
 
 -- Bedroom
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Livingroom'
-WHERE '192.168.1.11' <= "IP"."address"
-AND "IP"."address" < '192.168.1.21';
+WHERE "IP"."address" IN
+(
+	'192.168.1.11',
+	'192.168.1.12',
+	'192.168.1.13',
+	'192.168.1.14',
+	'192.168.1.15',
+	'192.168.1.16',
+	'192.168.1.17',
+	'192.168.1.18',
+	'192.168.1.19',
+	'192.168.1.20'
+);
 
 
 -- Livingroom
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Bedroom'
-WHERE '192.168.1.21' <= "IP"."address"
-AND "IP"."address" < '192.168.1.31';
+WHERE "IP"."address" IN
+(
+	'192.168.1.21',
+	'192.168.1.22',
+	'192.168.1.23',
+	'192.168.1.24',
+	'192.168.1.25',
+	'192.168.1.26',
+	'192.168.1.27',
+	'192.168.1.28',
+	'192.168.1.29',
+	'192.168.1.30'
+);
 
 
 -- Kitchen
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Kitchen'
-WHERE '192.168.1.31' <= "IP"."address"
-AND "IP"."address" < '192.168.1.36';
+WHERE "IP"."address" IN
+(
+	'192.168.1.31',
+	'192.168.1.32',
+	'192.168.1.33',
+	'192.168.1.34',
+	'192.168.1.35'
+);
 
 
 -- ———————————————————————————————————————————————— GROUPS::COMPUTER ———————————————————————————————————————————————— --
@@ -138,8 +176,14 @@ AND "IP"."address" < '192.168.1.36';
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Computer'
-WHERE '192.168.1.36' <= "IP"."address"
-AND "IP"."address" < '192.168.1.41';
+WHERE "IP"."address" IN
+(
+	'192.168.1.36',
+	'192.168.1.37',
+	'192.168.1.38',
+	'192.168.1.39',
+	'192.168.1.40'
+);
 
 
 -- ———————————————————————————————————————————————— GROUPS::DEVICES  ———————————————————————————————————————————————— --
@@ -148,8 +192,14 @@ AND "IP"."address" < '192.168.1.41';
 INSERT INTO "Group-IP" ("Group.id", "IP.id")
 SELECT "Group"."id", "IP"."id" FROM "IP"
 JOIN "Group" ON "Group"."label" = 'Mobile'
-WHERE '192.168.1.41' <= "IP"."address"
-AND "IP"."address" < '192.168.1.46';
+WHERE "IP"."address" IN
+(
+	'192.168.1.41',
+	'192.168.1.42',
+	'192.168.1.43',
+	'192.168.1.44',
+	'192.168.1.45'
+);
 
 -- ———————————————————————————————————————————— GROUPS::ENTERTAINMENT ———————————————————————————————————————————— --
 

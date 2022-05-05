@@ -11,11 +11,10 @@
 ***********************************************************************************************************************/
 
 
-use serde_json;
 use serde::{Deserialize, Serialize};
 
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Network
 {
 	pub label: String,
@@ -29,11 +28,5 @@ impl Network
 	pub fn new(label: String, gateway: String, netmask: String) -> Network
 	{
 		return Network{label: label, gateway: gateway, netmask: netmask};
-	}
-
-
-	pub fn to_string(self) -> Result<String, serde_json::Error>
-	{
-		return serde_json::to_string(&self);
 	}
 }
