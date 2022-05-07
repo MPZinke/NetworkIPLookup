@@ -11,7 +11,6 @@
 ***********************************************************************************************************************/
 
 
-use postgres;
 use std;
 
 
@@ -23,7 +22,7 @@ use std;
 #[derive(Debug)]
 pub enum QueryError
 {
-    Postgres(postgres::error::Error),
+    Postgres(sqlx::error::Error),
     NotFound(std::io::Error),
 }
 
@@ -43,9 +42,9 @@ impl std::fmt::Display for QueryError
 }
 
 
-impl From<postgres::error::Error> for QueryError
+impl From<sqlx::error::Error> for QueryError
 {
-    fn from(err: postgres::error::Error) -> Self
+    fn from(err: sqlx::error::Error) -> Self
     {
         QueryError::Postgres(err)
     }

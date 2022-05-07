@@ -16,7 +16,7 @@
 #![allow(non_camel_case_types)]
 
 
-use actix_web::{web, App, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
 
 
 mod IP;
@@ -26,19 +26,27 @@ mod QueryError;
 mod Routes;
 
 
+use sqlx::postgres::PgPool;
+
+
 use crate::Routes::api;
 
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()>
 {
-	std::env::set_var("RUST_LOG", "actix_web=info");
+	let host = "localhost";
+	let user = env!("USER");
+	let DB_name = "NetworkIPLookup";
+
+	let connection_str = format!("postgres://{}@{}:5432/{}", user, host, DB_name);
+	let connection_pool = PgPool::connect(&connection_str).await.expect("Failed to create Postgres DB connection pool");
 
 	HttpServer::new
 	(
-		||
+		move ||
 		{
-			App::new()
+			App::new().data(connection_pool.clone())
 			  .route("/", web::get().to(Routes::index))
 			  .route("/api", web::get().to(api::index))
 
