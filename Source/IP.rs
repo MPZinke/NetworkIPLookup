@@ -11,7 +11,7 @@
 ***********************************************************************************************************************/
 
 
-use sqlx::{postgres::PgRow, Row, Type};
+use sqlx::{postgres::PgRow, Row};
 use serde::{Deserialize, Serialize};
 
 

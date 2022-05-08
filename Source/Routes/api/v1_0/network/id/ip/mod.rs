@@ -11,34 +11,34 @@
 ***********************************************************************************************************************/
 
 
-pub mod ip;
+pub mod id;
+pub mod label;
 
 
-use actix_web::{HttpResponse, http::header::ContentType, web};
+use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
-use crate::Queries::{query_to_json, SELECT_Network_by_label};
+use crate::Queries::{query_to_json, SELECT_IPs_by_Network_id};
 
 
-// `/api/v1.0/network/label`
 pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{
-		"/api/v1.0/network/label/{label}": "Gets all the IPs for a network",
-		"/api/v1.0/network/label/{label}/ip": "List endpoints for the IPs for a network",
-		"/api/v1.0/network/label/{label}/group": "List endpoints for the IPs for a network"
+		"/api/v1.0/network/id/{id}/ips": "Gets all the IPs for a network",
+		"/api/v1.0/network/id/{id}/ip/id": "List endpoints for the IPs for a network",
+		"/api/v1.0/network/id/{id}/ip/label": "List endpoints for the IPs for a network"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
 
 
-// `/api/v1.0/network/label/{label}`
-pub async fn value(pool: web::Data<(PgPool)>, path: web::Path<(String)>) -> HttpResponse
+// `/api/v1.0/networks/id/{id}/ips`
+pub async fn ips(pool: web::Data<(PgPool)>, path: web::Path<(i32)>) -> HttpResponse
 {
-	let (label) = path.into_inner();
-	let query_response = SELECT_Network_by_label(pool.as_ref(), label).await;
+	let (id) = path.into_inner();
+	let query_response = SELECT_IPs_by_Network_id(pool.as_ref(), id).await;
 	let body = query_to_json(query_response);
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }

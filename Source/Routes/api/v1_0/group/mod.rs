@@ -11,34 +11,32 @@
 ***********************************************************************************************************************/
 
 
-pub mod ip;
-
-
 use actix_web::{HttpResponse, http::header::ContentType, web};
 use sqlx::postgres::PgPool;
 
-use crate::Queries::{query_to_json, SELECT_Network_by_label};
+use crate::Queries::{query_to_json, SELECT_Groups};
 
 
-// `/api/v1.0/network/label`
+// `/api/v1.0/group`
 pub async fn index() -> HttpResponse
 {
+	// SELECT_Network();
 	let body = r#"
 	{
-		"/api/v1.0/network/label/{label}": "Gets all the IPs for a network",
-		"/api/v1.0/network/label/{label}/ip": "List endpoints for the IPs for a network",
-		"/api/v1.0/network/label/{label}/group": "List endpoints for the IPs for a network"
+		"/api/v1.0/groups": "Get all available groups",
+		"/api/v1.0/group/id/{id}": "Get a group by its ID",
+		"/api/v1.0/group/label/{label}": "Get a group by its label"
 	}
 	"#;
+
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
 
 
-// `/api/v1.0/network/label/{label}`
-pub async fn value(pool: web::Data<(PgPool)>, path: web::Path<(String)>) -> HttpResponse
+// `/api/v1.0/groups
+pub async fn groups(pool: web::Data<(PgPool)>) -> HttpResponse
 {
-	let (label) = path.into_inner();
-	let query_response = SELECT_Network_by_label(pool.as_ref(), label).await;
+	let query_response = SELECT_Groups(pool.as_ref()).await;
 	let body = query_to_json(query_response);
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
