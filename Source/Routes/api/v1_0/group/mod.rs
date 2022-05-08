@@ -11,6 +11,10 @@
 ***********************************************************************************************************************/
 
 
+pub mod id;
+pub mod label;
+
+
 use actix_web::{HttpResponse, http::header::ContentType, web};
 use sqlx::postgres::PgPool;
 
@@ -23,9 +27,8 @@ pub async fn index() -> HttpResponse
 	// SELECT_Network();
 	let body = r#"
 	{
-		"/api/v1.0/groups": "Get all available groups",
-		"/api/v1.0/group/id/{id}": "Get a group by its ID",
-		"/api/v1.0/group/label/{label}": "Get a group by its label"
+		"/api/v1.0/group/id": "Get a group by ID path",
+		"/api/v1.0/group/label": "Queries for group based on label"
 	}
 	"#;
 
@@ -33,8 +36,8 @@ pub async fn index() -> HttpResponse
 }
 
 
-// `/api/v1.0/groups
-pub async fn groups(pool: web::Data<(PgPool)>) -> HttpResponse
+// `/api/v1.0/groups`
+pub async fn all(pool: web::Data<(PgPool)>) -> HttpResponse
 {
 	let query_response = SELECT_Groups(pool.as_ref()).await;
 	let body = query_to_json(query_response);

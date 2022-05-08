@@ -20,6 +20,10 @@ use actix_web::{HttpResponse, http::header::ContentType};
 // `/`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"{"api": "The API for all active protocols"}"#;
+	let body = r#"
+	{
+		"api": "The API for all active protocols"
+	}
+	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }

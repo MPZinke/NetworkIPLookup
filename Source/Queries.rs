@@ -118,7 +118,44 @@ pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<String>, QueryError>
 	let mut groups: Vec<String> = vec![];
 	for row in result
 	{
-		// let (label, gateway, netmask): (String)
+		groups.push(row.get("label"));
+	}
+	return Ok(groups);
+}
+
+
+//TODO: Convert to object
+pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Vec<String>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "label"
+	  FROM "Group"
+	  WHERE "id" = $1;
+	"#;
+	let result: Vec<PgRow> = query(query_str).bind(id).fetch_all(pool).await?;
+
+	let mut groups: Vec<String> = vec![];
+	for row in result
+	{
+		groups.push(row.get("label"));
+	}
+	return Ok(groups);
+}
+
+
+//TODO: Convert to object
+pub async fn SELECT_Group_by_label(pool: &PgPool, label: i32) -> Result<Vec<String>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "label"
+	  FROM "Group"
+	  WHERE "label" = $1;
+	"#;
+	let result: Vec<PgRow> = query(query_str).bind(label).fetch_all(pool).await?;
+
+	let mut groups: Vec<String> = vec![];
+	for row in result
+	{
 		groups.push(row.get("label"));
 	}
 	return Ok(groups);
@@ -211,6 +248,93 @@ pub async fn SELECT_IP_by_Network_label_AND_IP_address(pool: &PgPool, Network_la
 	}
 
 	let groups: Vec<String> = SELECT_Group_by_IP_address(pool, IP_address.clone()).await?;
+	return Ok(IP::new(groups, &result[0]));
+}
+
+
+pub async fn SELECT_IP_by_Network_id_AND_IP_id(pool: &PgPool, Network_id: String, IP_id: String)
+  -> Result<IP, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "IP"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."id" = $1
+	    AND "IP"."id" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_id.clone())
+	  .bind(IP_id.clone())
+	  .fetch_all(pool).await?;
+
+	if(result.len() < 1)
+	{
+		let message = format!("No results found for `Network`.`id`: '{}', `IP`.`id`: '{}'", Network_id, IP_id);
+		return Err(NewNotFoundError(message));
+	}
+	let IP_label: String = result[0].get("label");
+	let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label).await?;
+
+	return Ok(IP::new(groups, &result[0]));
+}
+
+
+pub async fn SELECT_IP_by_Network_id_AND_IP_label(pool: &PgPool, Network_id: String, IP_label: String)
+  -> Result<IP, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "IP"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."id" = $1
+	    AND "IP"."label" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_id.clone())
+	  .bind(IP_label.clone())
+	  .fetch_all(pool).await?;
+
+	let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label.clone()).await?;
+	if(result.len() < 1)
+	{
+		let message = format!("No results found for `Network`.`id`: '{}', `IP`.`label`: '{}'", Network_id,
+		  IP_label);
+		return Err(NewNotFoundError(message));
+	}
+
+	return Ok(IP::new(groups, &result[0]));
+}
+
+
+pub async fn SELECT_IP_by_Network_label_AND_IP_id(pool: &PgPool, Network_label: String, IP_id: String)
+  -> Result<IP, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "IP"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."label" = $1
+	    AND "IP"."id" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_label.clone())
+	  .bind(IP_id.clone())
+	  .fetch_all(pool).await?;
+
+	if(result.len() < 1)
+	{
+		let message = format!("No results found for `Network`.`label`: '{}', `IP`.`id`: '{}'", Network_label, IP_id);
+		return Err(NewNotFoundError(message));
+	}
+	let IP_label: String = result[0].get("label");
+	let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label).await?;
+
 	return Ok(IP::new(groups, &result[0]));
 }
 

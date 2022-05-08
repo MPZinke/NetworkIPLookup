@@ -24,12 +24,10 @@ use crate::Queries::{query_to_json, SELECT_Networks, SELECT_Network_by_id, SELEC
 // `/api/v1.0/network`
 pub async fn index() -> HttpResponse
 {
-	// SELECT_Network();
 	let body = r#"
 	{
-		"/api/v1.0/networks": "Get all available networks",
-		"/api/v1.0/network/id/{id}": "Get a network by its ID",
-		"/api/v1.0/network/label/{label}": "Get a network by its label"
+		"/api/v1.0/network/id": "Queries for a network based on network id",
+		"/api/v1.0/network/label": "Queries for a network based on network label"
 	}
 	"#;
 
@@ -37,8 +35,8 @@ pub async fn index() -> HttpResponse
 }
 
 
-// `/api/v1.0/networks
-pub async fn networks(pool: web::Data<(PgPool)>) -> HttpResponse
+// `/api/v1.0/networks`
+pub async fn all(pool: web::Data<(PgPool)>) -> HttpResponse
 {
 	let query_response = SELECT_Networks(pool.as_ref()).await;
 	let body = query_to_json(query_response);

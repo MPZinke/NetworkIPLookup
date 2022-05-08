@@ -21,13 +21,14 @@ use sqlx::postgres::PgPool;
 use crate::Queries::{query_to_json, SELECT_IPs_by_Network_id};
 
 
+// `/api/v1.0/network/id/{id}/ip`
 pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{
-		"/api/v1.0/network/id/{id}/ips": "Gets all the IPs for a network",
-		"/api/v1.0/network/id/{id}/ip/id": "List endpoints for the IPs for a network",
-		"/api/v1.0/network/id/{id}/ip/label": "List endpoints for the IPs for a network"
+		"/api/v1.0/network/id/{id}/ip/id": "Queries for IP based on IP id and network id",
+		"/api/v1.0/network/id/{id}/ip/label": "Queries for IP based on IP label and network id",
+		"/api/v1.0/network/id/{id}/ips/group": "Queries for IPs based on group and network id"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);

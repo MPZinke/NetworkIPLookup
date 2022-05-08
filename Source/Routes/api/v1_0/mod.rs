@@ -21,11 +21,12 @@ use actix_web::{HttpResponse, http::header::ContentType};
 // `/api/v1.0`
 pub async fn index() -> HttpResponse
 {
-	// list options: ['/api/v1.0/network']
 	let body = r#"
 	{
-		"/api/v1.0/network": "Query all networks"
-		"/api/v1.0/networks": "Query all networks"
+		"/api/v1.0/group": "Queries for groups",
+		"/api/v1.0/groups": "List all groups",
+		"/api/v1.0/network": "Queries for networks",
+		"/api/v1.0/networks": "List all networks"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
