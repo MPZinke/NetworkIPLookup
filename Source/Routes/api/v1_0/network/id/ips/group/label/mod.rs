@@ -15,7 +15,7 @@ use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
 
-use crate::Queries::{query_to_response, SELECT_IPs_by_Network_id_AND_Group_label};
+use crate::Query::{query_to_response, Queries::IP::SELECT_IPs_by_Network_id_AND_Group_label};
 
 
 // `/api/v1.0/network/id/{network_id}/ips/group`

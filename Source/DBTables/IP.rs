@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.07                                                                                                      *
+*   on 2022.05.05                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,29 +11,33 @@
 ***********************************************************************************************************************/
 
 
-use actix_web::{http::header::ContentType, HttpResponse, web};
-use sqlx::postgres::PgPool;
+use sqlx::{postgres::PgRow, Row};
+use serde::{Deserialize, Serialize};
 
 
-use crate::Query::{query_to_response, Queries::IP::SELECT_IP_by_Network_id_AND_IP_label};
+use crate::DBTables::Network::Network;
 
 
-// `/api/v1.0/network/id/{network_id}/ip/label`
-pub async fn index() -> HttpResponse
+#[derive(Debug, Deserialize, Serialize)]
+pub struct IP
 {
-	let body = r#"
-	{
-		"/api/v1.0/network/id/{network_id}/ip/label/{ip_label}": "Get an IP by IP label and network id"
-	}
-	"#;
-	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
+	pub address: String,
+	pub label: String,
+	pub is_reservation: bool,
+	pub is_static: bool,
+	pub mac: Option<String>,
+	pub groups: Vec<String>,
+	pub Network: Network
 }
 
 
-// `/api/v1.0/network/id/{network_id}/ip/label/{ip_label}`
-pub async fn label(pool: web::Data<(PgPool)>, path: web::Path<(i32, String)>) -> HttpResponse
+impl IP
 {
-	let (Network_id, IP_label) = path.into_inner();
-	let query_response = SELECT_IP_by_Network_id_AND_IP_label(pool.as_ref(), Network_id, IP_label).await;
-	return query_to_response(query_response);
+	pub fn new(groups: Vec<String>, row: &PgRow) -> IP
+	{
+		return IP{address: row.get("address"), label: row.get("label"), is_reservation: row.get("is_reservation"),
+		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,
+		  Network: Network::new(row.get("Network.label"),
+		  row.get("Network.gateway"), row.get("Network.netmask"))};
+	}
 }

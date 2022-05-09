@@ -19,7 +19,7 @@ use actix_web::{HttpResponse, http::header::ContentType, web};
 use sqlx::postgres::PgPool;
 
 
-use crate::Queries::{query_to_response, SELECT_Networks};
+use crate::Query::{query_to_response, Queries::Network::SELECT_Networks};
 
 
 // `/api/v1.0/network`

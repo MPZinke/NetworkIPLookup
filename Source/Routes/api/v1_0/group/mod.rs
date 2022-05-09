@@ -19,7 +19,7 @@ use actix_web::{HttpResponse, http::header::ContentType, web};
 use sqlx::postgres::PgPool;
 
 
-use crate::Queries::{query_to_response, SELECT_Groups};
+use crate::Query::{query_to_response, Queries::Group::SELECT_Groups};
 
 
 // `/api/v1.0/group`

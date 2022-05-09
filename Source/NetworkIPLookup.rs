@@ -16,11 +16,8 @@
 #![allow(non_camel_case_types)]
 
 
-mod Group;
-mod IP;
-mod Network;
-mod Queries;
-mod QueryError;
+mod DBTables;
+mod Query;
 mod Routes;
 
 

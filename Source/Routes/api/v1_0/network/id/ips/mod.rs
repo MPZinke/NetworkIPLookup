@@ -18,7 +18,7 @@ use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
 
-use crate::Queries::{query_to_response, SELECT_IPs_by_Network_id};
+use crate::Query::{query_to_response, Queries::IP::SELECT_IPs_by_Network_id};
 
 
 // `/api/v1.0/networks/id/{id}/ips`
