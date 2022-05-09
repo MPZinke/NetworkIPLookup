@@ -252,7 +252,7 @@ pub async fn SELECT_IP_by_Network_label_AND_IP_address(pool: &PgPool, Network_la
 }
 
 
-pub async fn SELECT_IP_by_Network_id_AND_IP_id(pool: &PgPool, Network_id: String, IP_id: String)
+pub async fn SELECT_IP_by_Network_id_AND_IP_id(pool: &PgPool, Network_id: i32, IP_id: i32)
   -> Result<IP, QueryError>
 {
 	let query_str: &str = r#"
@@ -281,7 +281,7 @@ pub async fn SELECT_IP_by_Network_id_AND_IP_id(pool: &PgPool, Network_id: String
 }
 
 
-pub async fn SELECT_IP_by_Network_id_AND_IP_label(pool: &PgPool, Network_id: String, IP_label: String)
+pub async fn SELECT_IP_by_Network_id_AND_IP_label(pool: &PgPool, Network_id: i32, IP_label: String)
   -> Result<IP, QueryError>
 {
 	let query_str: &str = r#"
@@ -310,7 +310,7 @@ pub async fn SELECT_IP_by_Network_id_AND_IP_label(pool: &PgPool, Network_id: Str
 }
 
 
-pub async fn SELECT_IP_by_Network_label_AND_IP_id(pool: &PgPool, Network_label: String, IP_id: String)
+pub async fn SELECT_IP_by_Network_label_AND_IP_id(pool: &PgPool, Network_label: String, IP_id: i32)
   -> Result<IP, QueryError>
 {
 	let query_str: &str = r#"
@@ -406,6 +406,99 @@ pub async fn SELECT_IPs_by_Network_label(pool: &PgPool, Network_label: String) -
 	  WHERE "Network"."label" = $1;
 	"#;
 	let result: Vec<PgRow> = query(query_str).bind(Network_label.clone()).fetch_all(pool).await?;
+	let mut IPs: Vec<IP> = vec![];
+	for row in result
+	{
+		let IP_label: String = row.get("label");
+		let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label).await?;
+		IPs.push(IP::new(groups, &row));
+	}
+
+	return Ok(IPs);
+}
+
+
+pub async fn SELECT_IPs_by_Network_id_AND_Group_id(pool: &PgPool, Network_id: i32, Group_id: i32)
+  -> Result<Vec<IP>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "Group-IP"
+	  JOIN "IP" ON "Group-IP"."IP.id" = "IP"."id"
+	  JOIN "Group" ON "Group-IP"."Group.id" = "Group"."id"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."id" = $1
+	    AND "Group"."id" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_id.clone())
+	  .bind(Group_id.clone())
+	  .fetch_all(pool).await?;
+
+	let mut IPs: Vec<IP> = vec![];
+	for row in result
+	{
+		let IP_label: String = row.get("label");
+		let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label).await?;
+		IPs.push(IP::new(groups, &row));
+	}
+
+	return Ok(IPs);
+}
+
+
+pub async fn SELECT_IPs_by_Network_id_AND_Group_label(pool: &PgPool, Network_id: i32, Group_label: String)
+  -> Result<Vec<IP>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "Group-IP"
+	  JOIN "IP" ON "Group-IP"."IP.id" = "IP"."id"
+	  JOIN "Group" ON "Group-IP"."Group.id" = "Group"."id"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."id" = $1
+	    AND "Group"."label" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_id.clone())
+	  .bind(Group_label.clone())
+	  .fetch_all(pool).await?;
+
+	let mut IPs: Vec<IP> = vec![];
+	for row in result
+	{
+		let IP_label: String = row.get("label");
+		let groups: Vec<String> = SELECT_Group_by_IP_label(pool, IP_label).await?;
+		IPs.push(IP::new(groups, &row));
+	}
+
+	return Ok(IPs);
+}
+
+
+pub async fn SELECT_IPs_by_Network_label_AND_Group_id(pool: &PgPool, Network_label: String, Group_id: i32)
+  -> Result<Vec<IP>, QueryError>
+{
+	let query_str: &str = r#"
+	  SELECT "IP"."address", "IP"."label", "IP"."is_reservation", "IP"."is_static",
+	    "IP"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	    "Network"."netmask" AS "Network.netmask"
+	  FROM "Group-IP"
+	  JOIN "IP" ON "Group-IP"."IP.id" = "IP"."id"
+	  JOIN "Group" ON "Group-IP"."Group.id" = "Group"."id"
+	  JOIN "Network" ON "IP"."Network.id" = "Network"."id"
+	  WHERE "Network"."label" = $1
+	    AND "Group"."id" = $2;
+	"#;
+	let result: Vec<PgRow> = query(query_str)
+	  .bind(Network_label.clone())
+	  .bind(Group_id.clone())
+	  .fetch_all(pool).await?;
+
 	let mut IPs: Vec<IP> = vec![];
 	for row in result
 	{

@@ -18,7 +18,8 @@ pub mod label;
 use actix_web::{HttpResponse, http::header::ContentType, web};
 use sqlx::postgres::PgPool;
 
-use crate::Queries::{query_to_json, SELECT_Networks, SELECT_Network_by_id, SELECT_Network_by_label};
+
+use crate::Queries::{query_to_json, SELECT_Networks};
 
 
 // `/api/v1.0/network`

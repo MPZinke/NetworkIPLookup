@@ -17,11 +17,12 @@ pub mod group;
 use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
+
 use crate::Queries::{query_to_json, SELECT_IPs_by_Network_label};
 
 
 // `/api/v1.0/networks/label/{label}/ips`
-pub async fn index(path: web::Path<(String)>) -> HttpResponse
+pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{	

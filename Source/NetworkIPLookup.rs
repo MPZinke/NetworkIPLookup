@@ -68,7 +68,7 @@ async fn main() -> std::io::Result<()>
 			  .route("/api/v1.0/network/id/{id}/ip/id/{id}", web::get().to(api::v1_0::network::id::ip::id::id))
 			  .route("/api/v1.0/network/id/{id}/ip/label", web::get().to(api::v1_0::network::id::ip::label::index))
 			  .route("/api/v1.0/network/id/{id}/ip/label/{label}", web::get().to(api::v1_0::network::id::ip::label::label))
-			  .route("/api/v1.0/network/id/{id}/ips", web::get().to(api::v1_0::network::id::ips::all))
+			  .route("/api/v1.0/network/id/{id}/ips", web::get().to(api::v1_0::network::id::ips::index))
 			  .route("/api/v1.0/network/id/{id}/ips/*", web::get().to(api::v1_0::network::id::ips::all))
 			  .route("/api/v1.0/network/id/{id}/ips/group", web::get().to(api::v1_0::network::id::ips::group::index))
 			  .route("/api/v1.0/network/id/{id}/ips/group/id", web::get().to(api::v1_0::network::id::ips::group::id::index))
@@ -78,7 +78,7 @@ async fn main() -> std::io::Result<()>
 
 			  .route("/api/v1.0/network/label", web::get().to(api::v1_0::network::label::index))
 			  .route("/api/v1.0/network/label/{label}", web::get().to(api::v1_0::network::label::label))
-			  .route("/api/v1.0/network/label/{label}/ip", web::get().to(api::v1_0::network::label::ip))
+			  .route("/api/v1.0/network/label/{label}/ip", web::get().to(api::v1_0::network::label::ip::index))
 			  .route("/api/v1.0/network/label/{label}/ip/id", web::get().to(api::v1_0::network::label::ip::id::index))
 			  .route("/api/v1.0/network/label/{label}/ip/id/{id}", web::get().to(api::v1_0::network::label::ip::id::id))
 			  .route("/api/v1.0/network/label/{label}/ip/label", web::get().to(api::v1_0::network::label::ip::label::index))

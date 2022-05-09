@@ -14,11 +14,12 @@
 use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
+
 use crate::Queries::{query_to_json, SELECT_IP_by_Network_id_AND_IP_id};
 
 
 // `/api/v1.0/network/id/{id}/ip/id`
-pub async fn index(pool: web::Data<(PgPool)>) -> HttpResponse
+pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{
