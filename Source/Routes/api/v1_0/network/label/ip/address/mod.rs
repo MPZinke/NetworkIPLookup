@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.07                                                                                                      *
+*   on 2022.05.09                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,24 +11,28 @@
 ***********************************************************************************************************************/
 
 
-pub mod address;
-pub mod id;
-pub mod label;
+use actix_web::{http::header::ContentType, HttpResponse, web};
+use sqlx::postgres::PgPool;
 
 
-use actix_web::{http::header::ContentType, HttpResponse};
+use crate::Queries::{query_to_json, SELECT_IP_by_Network_label_AND_IP_address};
 
 
-// `/api/v1.0/networks/label/{label}/ip`
 pub async fn index() -> HttpResponse
 {
 	let body = r#"
-	{	
-		"/api/v1.0/network/label/{label}/ip/address": "Queries for IP based on IP address and network label",
-		"/api/v1.0/network/label/{label}/ip/id": "Queries for IP based on IP id and network label"
-		"/api/v1.0/network/label/{label}/ip/label": "Queries for IP based on IP label and network label"
-		"/api/v1.0/network/label/{label}/ips/group": "Queries for IPs based on group and network label"
+	{
+		"/api/v1.0/network/id/{id}/ip/address/{address}": "Get an IP by IP address and network label"
 	}
 	"#;
+	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
+}
+
+
+pub async fn address(pool: web::Data<(PgPool)>, path: web::Path<(String, String)>) -> HttpResponse
+{
+	let (Network_label, IP_address) = path.into_inner();
+	let query_response = SELECT_IP_by_Network_label_AND_IP_address(pool.as_ref(), Network_label, IP_address).await;
+	let body = query_to_json(query_response);
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
