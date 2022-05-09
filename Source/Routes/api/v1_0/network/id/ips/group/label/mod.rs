@@ -15,26 +15,25 @@ use actix_web::{http::header::ContentType, HttpResponse, web};
 use sqlx::postgres::PgPool;
 
 
-use crate::Queries::{query_to_json, SELECT_IPs_by_Network_id_AND_Group_label};
+use crate::Queries::{query_to_response, SELECT_IPs_by_Network_id_AND_Group_label};
 
 
-// `/api/v1.0/network/id/{id}/ips/group`
+// `/api/v1.0/network/id/{network_id}/ips/group`
 pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{
-		"/api/v1.0/network/id/{id}/ips/group/label/{label}": "List all IPs based on group label and network id"
+		"/api/v1.0/network/id/{network_id}/ips/group/label/{group_label}": "List all IPs based on group label and network id"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
 
 
-// `/api/v1.0/network/id/{id}/ips/group/label/{label}`
+// `/api/v1.0/network/id/{network_id}/ips/group/label/{group_label}`
 pub async fn label(pool: web::Data<(PgPool)>, path: web::Path<(i32, String)>) -> HttpResponse
 {
 	let (Network_id, Group_label) = path.into_inner();
 	let query_response = SELECT_IPs_by_Network_id_AND_Group_label(pool.as_ref(), Network_id, Group_label).await;
-	let body = query_to_json(query_response);
-	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
+	return query_to_response(query_response);
 }

@@ -16,9 +16,7 @@
 #![allow(non_camel_case_types)]
 
 
-use actix_web::{web, App, HttpServer};
-
-
+mod Group;
 mod IP;
 mod Network;
 mod Queries;
@@ -26,6 +24,7 @@ mod QueryError;
 mod Routes;
 
 
+use actix_web::{web, App, HttpServer};
 use sqlx::postgres::PgPool;
 
 
@@ -52,48 +51,48 @@ async fn main() -> std::io::Result<()>
 			  .route("/api/v1.0", web::get().to(api::v1_0::index))
 			  // —— GROUP —— //
 			  .route("/api/v1.0/group", web::get().to(api::v1_0::group::index))
-			  .route("/api/v1.0/groups", web::get().to(api::v1_0::group::all))
+			  .route("/api/v1.0/group/all", web::get().to(api::v1_0::group::all))
 			  .route("/api/v1.0/group/id", web::get().to(api::v1_0::group::id::index))
-			  .route("/api/v1.0/group/id/{id}", web::get().to(api::v1_0::group::id::id))
+			  .route("/api/v1.0/group/id/{group_id}", web::get().to(api::v1_0::group::id::id))
 			  .route("/api/v1.0/group/label", web::get().to(api::v1_0::group::label::index))
-			  .route("/api/v1.0/group/label/{label}", web::get().to(api::v1_0::group::label::label))
+			  .route("/api/v1.0/group/label/{group_label}", web::get().to(api::v1_0::group::label::label))
 
 			  .route("/api/v1.0/network", web::get().to(api::v1_0::network::index))
-			  .route("/api/v1.0/networks", web::get().to(api::v1_0::network::all))
+			  .route("/api/v1.0/network/all", web::get().to(api::v1_0::network::all))
 
 			  .route("/api/v1.0/network/id", web::get().to(api::v1_0::network::id::index))
-			  .route("/api/v1.0/network/id/{id}", web::get().to(api::v1_0::network::id::id))
-			  .route("/api/v1.0/network/id/{id}/ip", web::get().to(api::v1_0::network::id::ip::index))
-			  .route("/api/v1.0/network/id/{id}/ip/address", web::get().to(api::v1_0::network::id::ip::address::index))
-			  .route("/api/v1.0/network/id/{id}/ip/address/{address}", web::get().to(api::v1_0::network::id::ip::address::address))
-			  .route("/api/v1.0/network/id/{id}/ip/id", web::get().to(api::v1_0::network::id::ip::id::index))
-			  .route("/api/v1.0/network/id/{id}/ip/id/{id}", web::get().to(api::v1_0::network::id::ip::id::id))
-			  .route("/api/v1.0/network/id/{id}/ip/label", web::get().to(api::v1_0::network::id::ip::label::index))
-			  .route("/api/v1.0/network/id/{id}/ip/label/{label}", web::get().to(api::v1_0::network::id::ip::label::label))
-			  .route("/api/v1.0/network/id/{id}/ips", web::get().to(api::v1_0::network::id::ips::index))
-			  .route("/api/v1.0/network/id/{id}/ips/*", web::get().to(api::v1_0::network::id::ips::all))
-			  .route("/api/v1.0/network/id/{id}/ips/group", web::get().to(api::v1_0::network::id::ips::group::index))
-			  .route("/api/v1.0/network/id/{id}/ips/group/id", web::get().to(api::v1_0::network::id::ips::group::id::index))
-			  .route("/api/v1.0/network/id/{id}/ips/group/id/{id}", web::get().to(api::v1_0::network::id::ips::group::id::id))
-			  .route("/api/v1.0/network/id/{id}/ips/group/label", web::get().to(api::v1_0::network::id::ips::group::label::index))
-			  .route("/api/v1.0/network/id/{id}/ips/group/label/{label}", web::get().to(api::v1_0::network::id::ips::group::label::label))
+			  .route("/api/v1.0/network/id/{network_id}", web::get().to(api::v1_0::network::id::id))
+			  .route("/api/v1.0/network/id/{network_id}/ip", web::get().to(api::v1_0::network::id::ip::index))
+			  .route("/api/v1.0/network/id/{network_id}/ip/address", web::get().to(api::v1_0::network::id::ip::address::index))
+			  .route("/api/v1.0/network/id/{network_id}/ip/address/{ip_address}", web::get().to(api::v1_0::network::id::ip::address::address))
+			  .route("/api/v1.0/network/id/{network_id}/ip/id", web::get().to(api::v1_0::network::id::ip::id::index))
+			  .route("/api/v1.0/network/id/{network_id}/ip/id/{ip_id}", web::get().to(api::v1_0::network::id::ip::id::id))
+			  .route("/api/v1.0/network/id/{network_id}/ip/label", web::get().to(api::v1_0::network::id::ip::label::index))
+			  .route("/api/v1.0/network/id/{network_id}/ip/label/{ip_label}", web::get().to(api::v1_0::network::id::ip::label::label))
+			  .route("/api/v1.0/network/id/{network_id}/ips", web::get().to(api::v1_0::network::id::ips::index))
+			  .route("/api/v1.0/network/id/{network_id}/ips/all", web::get().to(api::v1_0::network::id::ips::all))
+			  .route("/api/v1.0/network/id/{network_id}/ips/group", web::get().to(api::v1_0::network::id::ips::group::index))
+			  .route("/api/v1.0/network/id/{network_id}/ips/group/id", web::get().to(api::v1_0::network::id::ips::group::id::index))
+			  .route("/api/v1.0/network/id/{network_id}/ips/group/id/{group_id}", web::get().to(api::v1_0::network::id::ips::group::id::id))
+			  .route("/api/v1.0/network/id/{network_id}/ips/group/label", web::get().to(api::v1_0::network::id::ips::group::label::index))
+			  .route("/api/v1.0/network/id/{network_id}/ips/group/label/{group_label}", web::get().to(api::v1_0::network::id::ips::group::label::label))
 
 			  .route("/api/v1.0/network/label", web::get().to(api::v1_0::network::label::index))
-			  .route("/api/v1.0/network/label/{label}", web::get().to(api::v1_0::network::label::label))
-			  .route("/api/v1.0/network/label/{label}/ip", web::get().to(api::v1_0::network::label::ip::index))
-			  .route("/api/v1.0/network/label/{label}/ip/address", web::get().to(api::v1_0::network::label::ip::address::index))
-			  .route("/api/v1.0/network/label/{label}/ip/address/{address}", web::get().to(api::v1_0::network::label::ip::address::address))
-			  .route("/api/v1.0/network/label/{label}/ip/id", web::get().to(api::v1_0::network::label::ip::id::index))
-			  .route("/api/v1.0/network/label/{label}/ip/id/{id}", web::get().to(api::v1_0::network::label::ip::id::id))
-			  .route("/api/v1.0/network/label/{label}/ip/label", web::get().to(api::v1_0::network::label::ip::label::index))
-			  .route("/api/v1.0/network/label/{label}/ip/label/{label}", web::get().to(api::v1_0::network::label::ip::label::label))
-			  .route("/api/v1.0/network/label/{label}/ips", web::get().to(api::v1_0::network::label::ips::index))
-			  .route("/api/v1.0/network/label/{label}/ips/*", web::get().to(api::v1_0::network::label::ips::all))
-			  .route("/api/v1.0/network/label/{label}/ips/group", web::get().to(api::v1_0::network::label::ips::group::index))
-			  .route("/api/v1.0/network/label/{label}/ips/group/id", web::get().to(api::v1_0::network::label::ips::group::id::index))
-			  .route("/api/v1.0/network/label/{label}/ips/group/id/{id}", web::get().to(api::v1_0::network::label::ips::group::id::id))
-			  .route("/api/v1.0/network/label/{label}/ips/group/label", web::get().to(api::v1_0::network::label::ips::group::label::index))
-			  .route("/api/v1.0/network/label/{label}/ips/group/label/{label}", web::get().to(api::v1_0::network::label::ips::group::label::label))
+			  .route("/api/v1.0/network/label/{network_label}", web::get().to(api::v1_0::network::label::label))
+			  .route("/api/v1.0/network/label/{network_label}/ip", web::get().to(api::v1_0::network::label::ip::index))
+			  .route("/api/v1.0/network/label/{network_label}/ip/address", web::get().to(api::v1_0::network::label::ip::address::index))
+			  .route("/api/v1.0/network/label/{network_label}/ip/address/{ip_address}", web::get().to(api::v1_0::network::label::ip::address::address))
+			  .route("/api/v1.0/network/label/{network_label}/ip/id", web::get().to(api::v1_0::network::label::ip::id::index))
+			  .route("/api/v1.0/network/label/{network_label}/ip/id/{ip_id}", web::get().to(api::v1_0::network::label::ip::id::id))
+			  .route("/api/v1.0/network/label/{network_label}/ip/label", web::get().to(api::v1_0::network::label::ip::label::index))
+			  .route("/api/v1.0/network/label/{network_label}/ip/label/{ip_label}", web::get().to(api::v1_0::network::label::ip::label::label))
+			  .route("/api/v1.0/network/label/{network_label}/ips", web::get().to(api::v1_0::network::label::ips::index))
+			  .route("/api/v1.0/network/label/{network_label}/ips/all", web::get().to(api::v1_0::network::label::ips::all))
+			  .route("/api/v1.0/network/label/{network_label}/ips/group", web::get().to(api::v1_0::network::label::ips::group::index))
+			  .route("/api/v1.0/network/label/{network_label}/ips/group/id", web::get().to(api::v1_0::network::label::ips::group::id::index))
+			  .route("/api/v1.0/network/label/{network_label}/ips/group/id/{group_id}", web::get().to(api::v1_0::network::label::ips::group::id::id))
+			  .route("/api/v1.0/network/label/{network_label}/ips/group/label", web::get().to(api::v1_0::network::label::ips::group::label::index))
+			  .route("/api/v1.0/network/label/{network_label}/ips/group/label/{group_label}", web::get().to(api::v1_0::network::label::ips::group::label::label))
 		}
 	)
 	  .bind("127.0.0.1:8080")?

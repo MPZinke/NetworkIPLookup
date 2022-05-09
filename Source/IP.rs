@@ -34,7 +34,6 @@ pub struct IP
 impl IP
 {
 	pub fn new(groups: Vec<String>, row: &PgRow) -> IP
-	// pub fn new(groups: Vec<String>, row: &dyn Row<Database = dyn Type<DB>>) -> IP
 	{
 		return IP{address: row.get("address"), label: row.get("label"), is_reservation: row.get("is_reservation"),
 		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,

@@ -24,9 +24,7 @@ pub async fn index() -> HttpResponse
 	let body = r#"
 	{
 		"/api/v1.0/group": "Queries for groups",
-		"/api/v1.0/groups": "List all groups",
-		"/api/v1.0/network": "Queries for networks",
-		"/api/v1.0/networks": "List all networks"
+		"/api/v1.0/network": "Queries for networks"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);

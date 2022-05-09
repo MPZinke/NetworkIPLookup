@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.08                                                                                                      *
+*   on 2022.05.09                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,21 +11,22 @@
 ***********************************************************************************************************************/
 
 
-pub mod id;
-pub mod label;
+use sqlx::{postgres::PgRow, Row};
+use serde::{Deserialize, Serialize};
 
 
-use actix_web::{http::header::ContentType, HttpResponse};
-
-
-// `/api/v1.0/network/label/{network_label}/ips/group`
-pub async fn index() -> HttpResponse
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Group
 {
-	let body = r#"
+	pub id: i32,
+	pub label: String
+}
+
+
+impl Group
+{
+	pub fn new(row: &PgRow) -> Group
 	{
-		"/api/v1.0/network/label/{network_label}/ips/group/id": "Queries for IPs based on group id and network label",
-		"/api/v1.0/network/label/{network_label}/ips/group/label": "Queries for IPs based on group label and network label"
+		return Group{id: row.get("id"), label: row.get("label")};
 	}
-	"#;
-	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }

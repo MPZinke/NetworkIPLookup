@@ -24,10 +24,10 @@ pub async fn index() -> HttpResponse
 {
 	let body = r#"
 	{	
-		"/api/v1.0/network/label/{label}/ip/address": "Queries for IP based on IP address and network label",
-		"/api/v1.0/network/label/{label}/ip/id": "Queries for IP based on IP id and network label"
-		"/api/v1.0/network/label/{label}/ip/label": "Queries for IP based on IP label and network label"
-		"/api/v1.0/network/label/{label}/ips/group": "Queries for IPs based on group and network label"
+		"/api/v1.0/network/label/{network_label}/ip/address": "Queries for IP based on IP address and network label",
+		"/api/v1.0/network/label/{network_label}/ip/id": "Queries for IP based on IP id and network label"
+		"/api/v1.0/network/label/{network_label}/ip/label": "Queries for IP based on IP label and network label"
+		"/api/v1.0/network/label/{network_label}/ips/group": "Queries for IPs based on group and network label"
 	}
 	"#;
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
