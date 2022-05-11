@@ -16,6 +16,7 @@ pub mod label;
 
 
 use actix_web::{HttpResponse, http::header::ContentType, web};
+use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
@@ -39,8 +40,13 @@ pub async fn index() -> HttpResponse
 
 
 // `/api/v1.0/group/all`
-pub async fn all(pool: web::Data<(PgPool)>) -> HttpResponse
+pub async fn all(auth: BearerAuth, pool: web::Data<(PgPool)>) -> HttpResponse
 {
+	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
+	{
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+	}
+
 	let query_response = SELECT_Groups(pool.as_ref()).await;
 	return query_to_response(query_response);
 }

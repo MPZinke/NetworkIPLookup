@@ -12,6 +12,7 @@
 
 
 use actix_web::{http::header::ContentType, HttpResponse, web};
+use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
@@ -31,8 +32,13 @@ pub async fn index() -> HttpResponse
 
 
 // `/api/v1.0/network/id/{network_id}/ip/label/{ip_label}`
-pub async fn label(pool: web::Data<(PgPool)>, path: web::Path<(i32, String)>) -> HttpResponse
+pub async fn label(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web::Data<(PgPool)>) -> HttpResponse
 {
+	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
+	{
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+	}
+
 	let (Network_id, IP_label) = path.into_inner();
 	let query_response = SELECT_IP_by_Network_id_AND_IP_label(pool.as_ref(), Network_id, IP_label).await;
 	return query_to_response(query_response);
