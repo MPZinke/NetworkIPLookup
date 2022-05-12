@@ -17,6 +17,7 @@ use sqlx::postgres::PgPool;
 
 
 use crate::Query::{query_to_response, Queries::IP::SELECT_IP_by_Network_label_AND_IP_address};
+use crate::UnknownLookup::lookup_IP_on_network;
 
 
 pub async fn index() -> HttpResponse
@@ -38,6 +39,24 @@ pub async fn address(auth: BearerAuth, path: web::Path<(String, String)>, pool: 
 	}
 
 	let (Network_label, IP_address) = path.into_inner();
-	let query_response = SELECT_IP_by_Network_label_AND_IP_address(pool.as_ref(), Network_label, IP_address).await;
+	let query_response = SELECT_IP_by_Network_label_AND_IP_address(pool.as_ref(), &Network_label, &IP_address).await;
+
+	// If not found in DB, try to find IP address by scanning network
+	if(query_response.is_err())
+	{
+		match(lookup_IP_on_network(IP_address).await)
+		{
+			Some(value)
+			=>{ 
+				match(serde_json::to_string(&value))
+				{
+					Ok(response_body) => println!("{}", response_body),
+					Err(error) => println!("{{\"error\": \"{}\"}}", error)
+				}
+			}
+			None => println!("Nothing found")
+		}
+	}
+
 	return query_to_response(query_response);
 }

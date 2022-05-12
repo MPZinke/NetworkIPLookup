@@ -41,36 +41,53 @@ Additionally, the ping method can be used to determine if an device is active/re
 
 
 #### Desired Endpoints
-- `/v1.0`
-- `/v1.0/networks`
-- `/v1.0/network/id/{network id}`
-- `/v1.0/network/id/{network id}/ips/`
-- `/v1.0/network/id/{network id}/ips/is_reservation/{ip is_reservation}`
-- `/v1.0/network/id/{network id}/ips/is_static/{ip is_static}`
-- `/v1.0/network/id/{network id}/ips/DeviceTypes/id/{DeviceTypes id}`: Get all IPs for a DeviceType
-- `/v1.0/network/id/{network id}/ips/DeviceTypes/label/{DeviceTypes label}`: Get all IPs for a DeviceType
-- `/v1.0/network/id/{network id}/ip/id/{ip id}`
-- `/v1.0/network/id/{network id}/ip/label/{ip label}`
-- `/v1.0/network/id/{network id}/ip/address/{ip address}`
-- `/v1.0/network/label/{network label}`
-- `/v1.0/network/label/{network label}/ips/`
-- `/v1.0/network/label/{network label}/ips/is_reservation/{ip is_reservation}`
-- `/v1.0/network/label/{network label}/ips/is_static/{ip is_static}`
-- `/v1.0/network/label/{network label}/ips/DeviceTypes/id/{DeviceTypes id}`: Get all IPs for a DeviceType
-- `/v1.0/network/label/{network label}/ips/DeviceTypes/label/{DeviceTypes label}`: Get all IPs for a DeviceType
-- `/v1.0/network/label/{network label}/ip/id/{ip id}`
-- `/v1.0/network/label/{network label}/ip/id/{ip id}/DeviceTypes/id/{DeviceTypes id}`
-- `/v1.0/network/label/{network label}/ip/id/{ip id}/DeviceTypes/label/{DeviceTypes label}`
-- `/v1.0/network/label/{network label}/ip/address/{ip address}`
-- `/v1.0/network/label/{network label}/ip/address/{ip address}/DeviceTypes/id/{DeviceTypes id}`
-- `/v1.0/network/label/{network label}/ip/address/{ip address}/DeviceTypes/label/{DeviceTypes label}`
-- `/v1.0/network/label/{network label}/ip/label/{ip label}`
-- `/v1.0/network/label/{network label}/ip/label/{ip label}/DeviceTypes/id/{DeviceTypes id}`
-- `/v1.0/network/label/{network label}/ip/label/{ip label}/DeviceTypes/label/{DeviceTypes label}`
-- `/v1.0/network/label/{network label}/ip/address/{ip address}`
-- `/v1.0/DeviceTypes`: Get all DeviceTypes
-- `/v1.0/DeviceType/id/{DeviceTypes id}`: Get DeviceType info by id
-- `/v1.0/DeviceType/label/{DeviceTypes label}`: Get DeviceType info by label
+- `/api`
+- `/api/v1.0`
+- `/api/v1.0/group`: "Queries for groups"
+- `/api/v1.0/group/all`: "List all groups"
+- `/api/v1.0/group/id`: "Get a group by ID path"
+- `/api/v1.0/group/id/{id}`: "Get a group by ID"
+- `/api/v1.0/group/label`: "Queries for group based on label"
+- `/api/v1.0/group/label/{label}`: "Get a group by label"
+- `/api/v1.0/network`: "Queries for networks"
+- `/api/v1.0/network/all`: "List all networks"
+- `/api/v1.0/network/id`: "Queries for a network based on network id"
+- `/api/v1.0/network/id/{id}`: "Get a network by id"
+- `/api/v1.0/network/id/{id}/ip`: "Queries for IP based on network id"
+- `/api/v1.0/network/id/{id}/ip/id`: "Queries for IP based on IP id and network id"
+- `/api/v1.0/network/id/{id}/ip/id/{id}`: "Get an IP by IP id and network id"
+- `/api/v1.0/network/id/{id}/ip/label`: "Queries for IP based on IP label and network id"
+- `/api/v1.0/network/id/{id}/ip/label/{label}`: "Get an IP by IP label and network id"
+- `/api/v1.0/network/id/{id}/ips`: "Queries for IPs based one network id"
+- `/api/v1.0/network/id/{id}/ips/all`: "List all IPs for network id"
+- `/api/v1.0/network/id/{id}/ips/group`: "Queries for IPs based on group and network id"
+- `/api/v1.0/network/id/{id}/ips/group/id`: "Queries for IPs based on group id and network id"
+- `/api/v1.0/network/id/{id}/ips/group/id/{id}`: "List all IPs based on group id and network id"
+- `/api/v1.0/network/id/{id}/ips/group/label`: "Queries for IPs based on group label and network id"
+- `/api/v1.0/network/id/{id}/ips/group/label/{label}`: "List all IPs based on group label and network id"
+- `/api/v1.0/network/label`: "Queries for a network based on network label"
+- `/api/v1.0/network/label/{label}`: "Get a network by label"
+- `/api/v1.0/network/label/{label}/ip`: "Queries for IP based on network label"
+- `/api/v1.0/network/label/{label}/ip/id`: "Queries for IP based on IP id and network label"
+- `/api/v1.0/network/label/{label}/ip/id/{id}`: "Get an IP by IP id and network label"
+- `/api/v1.0/network/label/{label}/ip/label`: "Queries for IP based on IP label and network label"
+- `/api/v1.0/network/label/{label}/ip/label/{label}`: "Get an IP by IP label and network label"
+- `/api/v1.0/network/label/{label}/ips`: "Queries for IPs based one network label"
+- `/api/v1.0/network/label/{label}/ips/all`: "List all IPs for network label"
+- `/api/v1.0/network/label/{label}/ips/group`: "Queries for IPs based on group and network label"
+- `/api/v1.0/network/label/{label}/ips/group/id`: "Queries for IPs based on group id and network label"
+- `/api/v1.0/network/label/{label}/ips/group/id/{id}`: "List all IPs based on group id and network label"
+- `/api/v1.0/network/label/{label}/ips/group/label`: "Queries for IPs based on group label and network label"
+- `/api/v1.0/network/label/{label}/ips/group/label/{label}`: "List all IPs based on group label and network label"
+
+
+## Compiling
+```bash
+export NETWORKIPLOOKUP_BEARERTOKEN=""
+export NETWORKIPLOOKUP_ROUTER_DOMAIN=""
+
+cargo build
+```
 
 
 

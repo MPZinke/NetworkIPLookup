@@ -40,6 +40,6 @@ pub async fn id(auth: BearerAuth, path: web::Path<(String, i32)>, pool: web::Dat
 	}
 
 	let (Network_label, IP_id) = path.into_inner();
-	let query_response = SELECT_IP_by_Network_label_AND_IP_id(pool.as_ref(), Network_label, IP_id).await;
+	let query_response = SELECT_IP_by_Network_label_AND_IP_id(pool.as_ref(), &Network_label, IP_id).await;
 	return query_to_response(query_response);
 }

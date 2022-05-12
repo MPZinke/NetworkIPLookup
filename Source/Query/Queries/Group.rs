@@ -53,7 +53,7 @@ pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Group, QueryEr
 }
 
 
-pub async fn SELECT_Group_by_label(pool: &PgPool, label: String) -> Result<Group, QueryError>
+pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Group, QueryError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "label"
@@ -92,7 +92,7 @@ pub async fn SELECT_Groups_by_IP_id(pool: &PgPool, IP_id: i32) -> Result<Vec<Str
 }
 
 
-pub async fn SELECT_Groups_by_IP_address(pool: &PgPool, IP_address: String) -> Result<Vec<String>, QueryError>
+pub async fn SELECT_Groups_by_IP_address(pool: &PgPool, IP_address: &String) -> Result<Vec<String>, QueryError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."label"
@@ -112,7 +112,7 @@ pub async fn SELECT_Groups_by_IP_address(pool: &PgPool, IP_address: String) -> R
 }
 
 
-pub async fn SELECT_Groups_by_IP_label(pool: &PgPool, IP_label: String) -> Result<Vec<String>, QueryError>
+pub async fn SELECT_Groups_by_IP_label(pool: &PgPool, IP_label: &String) -> Result<Vec<String>, QueryError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."label"
