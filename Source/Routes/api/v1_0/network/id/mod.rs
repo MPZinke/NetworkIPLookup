@@ -42,7 +42,7 @@ pub async fn id(auth: BearerAuth, path: web::Path<(i32)>, pool: web::Data<(PgPoo
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
-		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
 	let id = path.into_inner();

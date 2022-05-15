@@ -36,7 +36,7 @@ pub async fn label(auth: BearerAuth, path: web::Path<(String, String)>, pool: we
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
-		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
 	let (Network_label, IP_label) = path.into_inner();

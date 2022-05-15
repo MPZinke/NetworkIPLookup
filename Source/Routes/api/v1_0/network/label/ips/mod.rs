@@ -40,7 +40,7 @@ pub async fn all(auth: BearerAuth, path: web::Path<(String)>, pool: web::Data<(P
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
-		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
 	let label = path.into_inner();

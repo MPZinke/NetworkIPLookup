@@ -43,7 +43,7 @@ pub async fn all(auth: BearerAuth, pool: web::Data<(PgPool)>) -> HttpResponse
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
-		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
 	let query_response = SELECT_Networks(pool.as_ref()).await;

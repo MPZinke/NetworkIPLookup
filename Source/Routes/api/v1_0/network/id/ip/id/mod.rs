@@ -36,7 +36,7 @@ pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<(
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
-		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body("{\"error\": \"Unauthorized\"}");
+		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
 	let (Network_id, IP_id) = path.into_inner();
