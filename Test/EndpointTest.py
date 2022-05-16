@@ -7,7 +7,7 @@ def request(URL) -> None:
 	auth = {"Authorization": "Bearer Hello"}
 	response = requests.get(URL, headers=auth)
 	print(response)
-	print(response.text)
+	print(response.json())
 
 	print("——————————————————————————————")
 

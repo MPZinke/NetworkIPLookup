@@ -31,7 +31,7 @@ pub async fn index() -> HttpResponse
 	let body: &str = r#"
 	{
 		"/api/v1.0/network/id/{network_id}": "Get a network by id",
-		"/api/v1.0/network/id/{network_id}/ip": "Queries for IP based on network id"
+		"/api/v1.0/network/id/{network_id}/ip": "Queries for IP based on network id",
 		"/api/v1.0/network/id/{network_id}/ips": "Queries for IPs based one network id"
 	}
 	"#;
