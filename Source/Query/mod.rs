@@ -15,7 +15,7 @@ pub mod Queries;
 pub mod QueryError;
 
 
-use actix_web::{http::header::ContentType, HttpResponse};
+use actix_web::{http::header::ContentType, HttpResponse, HttpResponseBuilder};
 use serde_json;
 use serde::Serialize;
 
@@ -48,12 +48,12 @@ pub fn query_to_response<T: Serialize>(generic_query: Result<T, Error>) -> HttpR
 		Ok(response_generic) => response_generic,
 		Err(error) =>
 		{
-			let response = match(error)
+			let response: fn() -> HttpResponseBuilder = match(error)
 			{
 				Error::Postgres(_) => HttpResponse::InternalServerError,
 				Error::NotFound(_) => HttpResponse::NotFound
 			};
-			let error_message = format!(r#"{{"error": "{}"}}"#, error);
+			let error_message: String = format!(r#"{{"error": "{}"}}"#, error);
 			return response().insert_header(ContentType::json()).body(error_message);
 		}
 	};
@@ -63,7 +63,7 @@ pub fn query_to_response<T: Serialize>(generic_query: Result<T, Error>) -> HttpR
 		Ok(response_body) => return HttpResponse::Ok().insert_header(ContentType::json()).body(response_body),
 		Err(error) => 
 		{
-			let error_message = format!(r#"{{"error": "{}"}}"#, error);
+			let error_message: String = format!(r#"{{"error": "{}"}}"#, error);
 			return HttpResponse::InternalServerError().insert_header(ContentType::json()).body(error_message);
 		}
 	}

@@ -16,13 +16,15 @@ use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
+use crate::DBTables::Group::Group;
 use crate::Query::{query_to_response, Queries::Group::SELECT_Group_by_label};
+use crate::Query::QueryError::QueryError as Error;
 
 
 // `/api/v1.0/group/label`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0/group/label/{group_label}": "Get a group by label"
 	}
@@ -33,7 +35,7 @@ pub async fn index() -> HttpResponse
 
 
 // `/api/v1.0/group/label/{group_label}`
-pub async fn label(auth: BearerAuth, path: web::Path<(String)>, pool: web::Data<(PgPool)>) -> HttpResponse
+pub async fn label(auth: BearerAuth, path: web::Path<String>, pool: web::Data<PgPool>) -> HttpResponse
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
@@ -41,6 +43,6 @@ pub async fn label(auth: BearerAuth, path: web::Path<(String)>, pool: web::Data<
 	}
 
 	let label = path.into_inner();
-	let query_response = SELECT_Group_by_label(pool.as_ref(), &label).await;
+	let query_response: Result<Group, Error> = SELECT_Group_by_label(pool.as_ref(), &label).await;
 	return query_to_response(query_response);
 }

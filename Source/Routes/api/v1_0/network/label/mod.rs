@@ -20,13 +20,15 @@ use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
+use crate::DBTables::Network::Network;
+use crate::Query::QueryError::QueryError as Error;
 use crate::Query::{query_to_response, Queries::Network::SELECT_Network_by_label};
 
 
 // `/api/v1.0/network/label`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0/network/label/{network_label}": "Get a network by label",
 		"/api/v1.0/network/label/{network_label}/ip": "Queries for IP based on network label"
@@ -38,7 +40,7 @@ pub async fn index() -> HttpResponse
 
 
 // `/api/v1.0/network/label/{network_label}`
-pub async fn label(auth: BearerAuth, path: web::Path<(String)>, pool: web::Data<(PgPool)>) -> HttpResponse
+pub async fn label(auth: BearerAuth, path: web::Path<String>, pool: web::Data<PgPool>) -> HttpResponse
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
@@ -46,6 +48,6 @@ pub async fn label(auth: BearerAuth, path: web::Path<(String)>, pool: web::Data<
 	}
 
 	let label = path.into_inner();
-	let query_response = SELECT_Network_by_label(pool.as_ref(), &label).await;
+	let query_response: Result<Network, Error> = SELECT_Network_by_label(pool.as_ref(), &label).await;
 	return query_to_response(query_response);
 }

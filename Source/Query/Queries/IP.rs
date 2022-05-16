@@ -32,13 +32,13 @@ pub async fn SELECT_IP_by_Network_id_AND_IP_address(pool: &PgPool, Network_id: i
 	    AND "IP"."address" = $2;
 	"#;
 	let result: Vec<PgRow> = query(query_str)
-	  .bind(Network_id.clone())
+	  .bind(Network_id)
 	  .bind(IP_address.clone())
 	  .fetch_all(pool).await?;
 
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`label`: '{}', `IP`.`address`: '{}'", Network_id,
+		let message: String = format!("No results found for `Network`.`id`: '{}', `IP`.`address`: '{}'", Network_id,
 		  IP_address);
 		return Err(NewNotFoundError(message));
 	}
@@ -66,8 +66,8 @@ pub async fn SELECT_IP_by_Network_label_AND_IP_address(pool: &PgPool, Network_la
 	  .fetch_all(pool).await?;
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`label`: '{}', `IP`.`address`: '{}'", Network_label,
-		  IP_address);
+		let message: String = format!("No results found for `Network`.`label`: '{}', `IP`.`address`: '{}'",
+		  Network_label, IP_address);
 		return Err(NewNotFoundError(message));
 	}
 
@@ -95,7 +95,7 @@ pub async fn SELECT_IP_by_Network_id_AND_IP_id(pool: &PgPool, Network_id: i32, I
 
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`id`: '{}', `IP`.`id`: '{}'", Network_id, IP_id);
+		let message: String = format!("No results found for `Network`.`id`: '{}', `IP`.`id`: '{}'", Network_id, IP_id);
 		return Err(NewNotFoundError(message));
 	}
 
@@ -123,7 +123,8 @@ pub async fn SELECT_IP_by_Network_id_AND_IP_label(pool: &PgPool, Network_id: i32
 
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`id`: '{}', `IP`.`label`: '{}'", Network_id, IP_label);
+		let message: String = format!("No results found for `Network`.`id`: '{}', `IP`.`label`: '{}'", Network_id,
+		  IP_label);
 		return Err(NewNotFoundError(message));
 	}
 
@@ -151,7 +152,8 @@ pub async fn SELECT_IP_by_Network_label_AND_IP_id(pool: &PgPool, Network_label: 
 
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`label`: '{}', `IP`.`id`: '{}'", Network_label, IP_id);
+		let message: String = format!("No results found for `Network`.`label`: '{}', `IP`.`id`: '{}'", Network_label,
+		  IP_id);
 		return Err(NewNotFoundError(message));
 	}
 
@@ -179,7 +181,7 @@ pub async fn SELECT_IP_by_Network_label_AND_IP_label(pool: &PgPool, Network_labe
 
 	if(result.len() < 1)
 	{
-		let message = format!("No results found for `Network`.`label`: '{}', `IP`.`label`: '{}'", Network_label,
+		let message: String = format!("No results found for `Network`.`label`: '{}', `IP`.`label`: '{}'", Network_label,
 		  IP_label);
 		return Err(NewNotFoundError(message));
 	}

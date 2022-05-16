@@ -17,9 +17,9 @@
 
 
 mod DBTables;
+mod LookupUnknownIP;
 mod Query;
 mod Routes;
-mod UnknownLookup;
 
 
 use actix_web::{web, App, HttpServer};
@@ -32,12 +32,13 @@ use crate::Routes::api;
 #[actix_web::main]
 async fn main() -> std::io::Result<()>
 {
-	let host = "localhost";
-	let user = env!("USER");
-	let DB_name = "NetworkIPLookup";
+	let host: &str = "localhost";
+	let user: &str = env!("USER");
+	let DB_name: &str = "NetworkIPLookup";
 
-	let connection_str = format!("postgres://{}@{}:5432/{}", user, host, DB_name);
-	let connection_pool = PgPool::connect(&connection_str).await.expect("Failed to create Postgres DB connection pool");
+	let connection_str: String = format!("postgres://{}@{}:5432/{}", user, host, DB_name);
+	let connection_pool: PgPool = PgPool::connect(&connection_str).await
+	  .expect("Failed to create Postgres DB connection pool");
 
 	HttpServer::new
 	(

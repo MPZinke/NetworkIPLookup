@@ -16,13 +16,15 @@ use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
+use crate::DBTables::IP::IP;
 use crate::Query::{query_to_response, Queries::IP::SELECT_IP_by_Network_id_AND_IP_id};
+use crate::Query::QueryError::QueryError as Error;
 
 
 // `/api/v1.0/network/id/{network_id}/ip/id`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0/network/id/{network_id}/ip/id/{ip_id}": "Get an IP by IP id and network id"
 	}
@@ -32,7 +34,7 @@ pub async fn index() -> HttpResponse
 
 
 // `/api/v1.0/network/id/{network_id}/ip/id/{ip_id}`
-pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<(PgPool)>) -> HttpResponse
+pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<PgPool>) -> HttpResponse
 {
 	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
 	{
@@ -40,6 +42,6 @@ pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<(
 	}
 
 	let (Network_id, IP_id) = path.into_inner();
-	let query_response = SELECT_IP_by_Network_id_AND_IP_id(pool.as_ref(), Network_id, IP_id).await;
+	let query_response: Result<IP, Error> = SELECT_IP_by_Network_id_AND_IP_id(pool.as_ref(), Network_id, IP_id).await;
 	return query_to_response(query_response);
 }

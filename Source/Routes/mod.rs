@@ -20,7 +20,7 @@ use actix_web::{HttpResponse, http::header::ContentType};
 // `/`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"api": "The API for all active protocols"
 	}

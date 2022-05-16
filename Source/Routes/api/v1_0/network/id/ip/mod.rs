@@ -22,7 +22,7 @@ use actix_web::{http::header::ContentType, HttpResponse};
 // `/api/v1.0/network/id/{network_id}/ip`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0/network/id/{network_id}/ip/address": "Queries for IP based on IP address and network id",
 		"/api/v1.0/network/id/{network_id}/ip/id": "Queries for IP based on IP id and network id",

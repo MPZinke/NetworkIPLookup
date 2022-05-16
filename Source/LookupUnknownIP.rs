@@ -17,6 +17,7 @@ use reqwest;
 
 use crate::DBTables::IP::IP;
 use crate::DBTables::Network::Network;
+use crate::Query::QueryError::{NewNotFoundError, QueryError as Error};
 
 
 async fn router_request() -> Result<String, reqwest::Error>
@@ -25,23 +26,9 @@ async fn router_request() -> Result<String, reqwest::Error>
 }
 
 
-pub fn response_contains_IP_address(address: &String, response: &String) -> bool
+fn filter_response_for_IPs_section(address: &String, response: &String) -> Option<String>
 {
-	// Don't assume the regex is properly formatted because user can put garbage into the address param.
-	let expression = format!(r#"<td align="center"><span class="clickMe" >{}</span></td>"#, address);
-	let regex = match(Regex::new(&expression))
-	{
-		Ok(regex) => regex,
-		Err(_) => return false
-	};
-
-	return regex.is_match(&response);
-}
-
-
-pub fn filter_response_for_IPs_section(address: &String, response: &String) -> Option<String>
-{
-	let expression = format!(
+	let expression: String = format!(
 	  concat!(r#"<tr><td\s*align="center"><input\s*name="check_dev"\s*type="checkbox"\s*value="([a-fA-F0-9]{{2}}:){{"#,
 	    r#"5}}[a-fA-F0-9]{{2}}"onclick="handle_checkboxElements\(this\);"></td>\s*\s*\s*<td\s*align="center"\s*name="#,
 	    r#""show_status"><span\s*class="clickMe"\s*>[a-zA-Z]*</span></td>\s*\s*\s*<td\s*align="center"><span\s*class"#,
@@ -53,7 +40,7 @@ pub fn filter_response_for_IPs_section(address: &String, response: &String) -> O
 	    r#"}}:){{5}}[a-fA-F0-9]{{2}}</span></td>"#),
 	  address);
 
-	let regex = Regex::new(&expression).unwrap();
+	let regex: Regex = Regex::new(&expression).unwrap();
 
 	match(regex.find(&response))
 	{
@@ -65,7 +52,7 @@ pub fn filter_response_for_IPs_section(address: &String, response: &String) -> O
 
 fn regex_and_default_to_empty_string(expression: &String, section: &String) -> String
 {
-	let empty_string = "".to_string();
+	let empty_string: String = "".to_string();
 	match(Regex::new(&expression))
 	{
 		Err(_) => return empty_string,
@@ -84,28 +71,35 @@ fn regex_and_default_to_empty_string(expression: &String, section: &String) -> S
 
 fn convert_section_to_IP(address: String, network: Network, section: &String) -> IP
 {
-	let label_section = regex_and_default_to_empty_string(&r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string(), section);
+	let label_regex: String = r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string();
+	let label_section: String = regex_and_default_to_empty_string(&label_regex, section);
 	let label: String = label_section[4..label_section.len()-7].to_string();
-	let mac = regex_and_default_to_empty_string(&r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string(), section);
+	let mac: String = regex_and_default_to_empty_string(&r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string(), section);
 
 	return IP{address: address, label: label, is_reservation: false, is_static: false, mac: Some(mac), groups: vec![],
 	  Network: network};
 }
 
 
-pub async fn lookup_IP_on_network(address: String, network: Network) -> Option<IP>
+pub async fn lookup_IP_on_network(address: String, network: Network) -> Result<IP, Error>
 {
-	let response = match(router_request().await)
+	let response: String = match(router_request().await)
 	{
 		Ok(response) => response,
-		Err(_) => return None
+		Err(error) => return Err(NewNotFoundError(error.to_string()))
 	};
 
-	let section = match(filter_response_for_IPs_section(&address, &response))
+	let section: String = match(filter_response_for_IPs_section(&address, &response))
 	{
 		Some(section) => section,
-		None => return None
+		None
+		=>
+		{
+			let body: String = format!("No results found for `Network`.`label`: '{}', `IP`.`address`: '{}'", 
+			  &network.label, &address);
+			return Err(NewNotFoundError(body));
+		}
 	};
 
-	return Some(convert_section_to_IP(address, network, &section));
+	return Ok(convert_section_to_IP(address, network, &section))
 }

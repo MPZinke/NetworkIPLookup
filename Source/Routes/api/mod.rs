@@ -20,7 +20,7 @@ use actix_web::{HttpResponse, http::header::ContentType};
 // `/api`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0": "The current version of this API"
 	}

@@ -21,7 +21,7 @@ use actix_web::{http::header::ContentType, HttpResponse};
 // `/api/v1.0/network/label/{network_label}/ips/group`
 pub async fn index() -> HttpResponse
 {
-	let body = r#"
+	let body: &str = r#"
 	{
 		"/api/v1.0/network/label/{network_label}/ips/group/id": "Queries for IPs based on group id and network label",
 		"/api/v1.0/network/label/{network_label}/ips/group/label": "Queries for IPs based on group label and network label"
