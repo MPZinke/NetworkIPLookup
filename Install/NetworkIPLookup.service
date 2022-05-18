@@ -1,0 +1,11 @@
+[Unit]
+Description=Network IP Lookup API
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/NetworkIPLookup
+User=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
