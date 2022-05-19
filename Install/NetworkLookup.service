@@ -1,0 +1,11 @@
+[Unit]
+Description=Network Device Lookup API
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/NetworkLookup
+User=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

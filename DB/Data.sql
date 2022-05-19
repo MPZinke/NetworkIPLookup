@@ -25,7 +25,7 @@
 INSERT INTO "Network" ("label", "gateway", "netmask") VALUES ('Home', '192.168.1.1', '255.255.255.0');
 
 
-INSERT INTO "IP" ("address", "label", "is_reservation", "is_static", "mac", "Network.id")
+INSERT INTO "Device" ("address", "label", "is_reservation", "is_static", "mac", "Network.id")
 SELECT "Temp"."address", "Temp"."label", "Temp"."is_reservation", "Temp"."is_static", "Temp"."mac", "Network"."id"
 FROM
 (
@@ -101,10 +101,10 @@ INSERT INTO "Group" ("label") VALUES
 -- ————————————————————————————————————————————————— GROUPS::ROOMS  ————————————————————————————————————————————————— --
 
 -- House
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'House'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.2',
 	'192.168.1.3',
@@ -119,10 +119,10 @@ WHERE "IP"."address" IN
 
 
 -- Bedroom
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Livingroom'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.11',
 	'192.168.1.12',
@@ -138,10 +138,10 @@ WHERE "IP"."address" IN
 
 
 -- Livingroom
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Bedroom'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.21',
 	'192.168.1.22',
@@ -157,10 +157,10 @@ WHERE "IP"."address" IN
 
 
 -- Kitchen
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Kitchen'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.31',
 	'192.168.1.32',
@@ -173,10 +173,10 @@ WHERE "IP"."address" IN
 -- ———————————————————————————————————————————————— GROUPS::COMPUTER ———————————————————————————————————————————————— --
 
 -- Computers
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Computer'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.36',
 	'192.168.1.37',
@@ -189,10 +189,10 @@ WHERE "IP"."address" IN
 -- ———————————————————————————————————————————————— GROUPS::DEVICES  ———————————————————————————————————————————————— --
 
 -- Mobile
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Mobile'
-WHERE "IP"."address" IN
+WHERE "Device"."address" IN
 (
 	'192.168.1.41',
 	'192.168.1.42',
@@ -207,11 +207,11 @@ INSERT INTO "Group" ("label") VALUES
 ('Entertainment');
 
 
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Entertainment'
-JOIN "Network" ON "IP"."Network.id" = "Network"."id"
-WHERE ("IP"."label", "Network"."label") IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
 	('Bedroom-TV', 'Home'),
 	('Livingroom-TV', 'Home')
@@ -224,11 +224,11 @@ INSERT INTO "Group" ("label") VALUES
 ('Smart');
 
 
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Smart'
-JOIN "Network" ON "IP"."Network.id" = "Network"."id"
-WHERE ("IP"."label", "Network"."label") IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
 	('Bedroom-TV', 'Home'),
 	('Livingroom-TV', 'Home')
@@ -241,11 +241,11 @@ INSERT INTO "Group" ("label") VALUES
 ('Curtain');
 
 
-INSERT INTO "Group-IP" ("Group.id", "IP.id")
-SELECT "Group"."id", "IP"."id" FROM "IP"
+INSERT INTO "Group-Device" ("Group.id", "Device.id")
+SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Curtain'
-JOIN "Network" ON "IP"."Network.id" = "Network"."id"
-WHERE ("IP"."label", "Network"."label") IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
 	('Bedroom-Curtain', 'Home'),
 	('Livingroom-Curtain', 'Home'),

@@ -21,16 +21,16 @@ CREATE TABLE "Network"
 );
 
 
--- SUMMARY:  IP Addresses for a Network.
--- RELATION: <IP>:<Network> N:1.
-CREATE TABLE "IP"
+-- SUMMARY:  Device Addresses for a Network.
+-- RELATION: <Device>:<Network> N:1.
+CREATE TABLE "Device"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
-	"address" VARCHAR(15) NOT NULL,
+	"address" VARCHAR(15) DEFAULT NULL,
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"is_reservation" BOOL NOT NULL DEFAULT FALSE,
-	"is_static" BOOL NOT NULL DEFAULT TRUE,
-	"mac" CHAR(16) DEFAULT NULL,
+	"is_static" BOOL NOT NULL DEFAULT FALSE,
+	"mac" CHAR(17) DEFAULT NULL,
 	"Network.id" INT NOT NULL,
 	FOREIGN KEY ("Network.id") REFERENCES "Network"("id"),
 	UNIQUE("address", "Network.id"),
@@ -38,21 +38,21 @@ CREATE TABLE "IP"
 );
 
 
--- SUMMARY:  Services that runs on the device for an IP.
--- RELATION: <Service>:<IP> N:1.
+-- SUMMARY:  Services that runs on the device for a device.
+-- RELATION: <Service>:<Device> N:1.
 CREATE TABLE "Service"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"port" SMALLINT NOT NULL DEFAULT 80,
-	"IP.id" INT NOT NULL,
-	FOREIGN KEY ("IP.id") REFERENCES "IP"("id"),
-	UNIQUE("label", "IP.id")
+	"Device.id" INT NOT NULL,
+	FOREIGN KEY ("Device.id") REFERENCES "Device"("id"),
+	UNIQUE("label", "Device.id")
 );
 
 
 -- SUMMARY:  Types of devices.
--- RELATION: <Group>:<IP> N:M.
+-- RELATION: <Group>:<Device> N:M.
 -- REQUIRED VALUES: ['Other', 'Mixed']
 CREATE TABLE "Group"
 (
@@ -61,15 +61,15 @@ CREATE TABLE "Group"
 );
 
 
--- SUMMARY:  Associates Groups with IPs.
--- RELATION: <Group>:<IP> N:M.
-CREATE TABLE "Group-IP"
+-- SUMMARY:  Associates Groups with Devices.
+-- RELATION: <Group>:<Device> N:M.
+CREATE TABLE "Group-Device"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
 	"Group.id" INT NOT NULL DEFAULT 1,
 	FOREIGN KEY ("Group.id") REFERENCES "Group"("id"),
-	"IP.id" INT NOT NULL DEFAULT 1,
-	FOREIGN KEY ("IP.id") REFERENCES "IP"("id"),
-	UNIQUE("Group.id", "IP.id")
+	"Device.id" INT NOT NULL DEFAULT 1,
+	FOREIGN KEY ("Device.id") REFERENCES "Device"("id"),
+	UNIQUE("Group.id", "Device.id")
 );
 

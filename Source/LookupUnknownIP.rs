@@ -15,18 +15,18 @@ use regex::Regex;
 use reqwest;
 
 
-use crate::DBTables::IP::IP;
+use crate::DBTables::Device::Device;
 use crate::DBTables::Network::Network;
 use crate::Query::QueryError::{NewNotFoundError, QueryError as Error};
 
 
 async fn router_request() -> Result<String, reqwest::Error>
 {
-	return reqwest::get(format!("http://{}/Local.html", env!("NETWORKIPLOOKUP_ROUTER_DOMAIN"))).await?.text().await;
+	return reqwest::get(format!("http://{}/Local.html", env!("NETWORKLOOKUP_ROUTER_DOMAIN"))).await?.text().await;
 }
 
 
-fn filter_response_for_IPs_section(address: &String, response: &String) -> Option<String>
+fn filter_response_for_Devices_section(address: &String, response: &String) -> Option<String>
 {
 	let expression: String = format!(
 	  concat!(r#"<tr><td\s*align="center"><input\s*name="check_dev"\s*type="checkbox"\s*value="([a-fA-F0-9]{{2}}:){{"#,
@@ -69,19 +69,19 @@ fn regex_and_default_to_empty_string(expression: &String, section: &String) -> S
 }
 
 
-fn convert_section_to_IP(address: String, network: Network, section: &String) -> IP
+fn convert_section_to_Device(address: String, network: Network, section: &String) -> Device
 {
 	let label_regex: String = r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string();
 	let label_section: String = regex_and_default_to_empty_string(&label_regex, section);
 	let label: String = label_section[4..label_section.len()-7].to_string();
 	let mac: String = regex_and_default_to_empty_string(&r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string(), section);
 
-	return IP{address: address, label: label, is_reservation: false, is_static: false, mac: Some(mac), groups: vec![],
+	return Device{address: address, label: label, is_reservation: false, is_static: false, mac: Some(mac), groups: vec![],
 	  Network: network};
 }
 
 
-pub async fn lookup_IP_on_network(address: String, network: Network) -> Result<IP, Error>
+pub async fn lookup_Device_on_network(address: String, network: Network) -> Result<Device, Error>
 {
 	let response: String = match(router_request().await)
 	{
@@ -89,17 +89,17 @@ pub async fn lookup_IP_on_network(address: String, network: Network) -> Result<I
 		Err(error) => return Err(NewNotFoundError(error.to_string()))
 	};
 
-	let section: String = match(filter_response_for_IPs_section(&address, &response))
+	let section: String = match(filter_response_for_Devices_section(&address, &response))
 	{
 		Some(section) => section,
 		None
 		=>
 		{
-			let body: String = format!("No results found for `Network`.`label`: '{}', `IP`.`address`: '{}'", 
+			let body: String = format!("No results found for `Network`.`label`: '{}', `Device`.`address`: '{}'", 
 			  &network.label, &address);
 			return Err(NewNotFoundError(body));
 		}
 	};
 
-	return Ok(convert_section_to_IP(address, network, &section))
+	return Ok(convert_section_to_Device(address, network, &section))
 }

@@ -37,7 +37,7 @@ pub async fn index() -> HttpResponse
 // `/api/v1.0/group/label/{group_label}`
 pub async fn label(auth: BearerAuth, path: web::Path<String>, pool: web::Data<PgPool>) -> HttpResponse
 {
-	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
+	if(env!("NETWORKLOOKUP_BEARERTOKEN") != auth.token())
 	{
 		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}

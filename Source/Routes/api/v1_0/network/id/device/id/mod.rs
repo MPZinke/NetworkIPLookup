@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.05                                                                                                      *
+*   on 2022.05.07                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,43 +11,37 @@
 ***********************************************************************************************************************/
 
 
-pub mod id;
-pub mod label;
-
-
-use actix_web::{HttpResponse, http::header::ContentType, web};
+use actix_web::{http::header::ContentType, HttpResponse, web};
 use actix_web_httpauth::extractors::bearer::BearerAuth;
 use sqlx::postgres::PgPool;
 
 
-use crate::DBTables::Network::Network;
-use crate::Query::{query_to_response, Queries::Network::SELECT_Networks};
+use crate::DBTables::Device::Device;
+use crate::Query::{query_to_response, Queries::Device::SELECT_Device_by_Network_id_AND_Device_id};
 use crate::Query::QueryError::QueryError as Error;
 
 
-// `/api/v1.0/network`
+// `/api/v1.0/network/id/{network_id}/device/id`
 pub async fn index() -> HttpResponse
 {
 	let body: &str = r#"
 	{
-		"/api/v1.0/network/all": "List all networks",
-		"/api/v1.0/network/id": "Queries for a network based on network id",
-		"/api/v1.0/network/label": "Queries for a network based on network label"
+		"/api/v1.0/network/id/{network_id}/device/id/{device_id}": "Get a device by device id and network id"
 	}
 	"#;
-
 	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
 }
 
 
-// `/api/v1.0/network/all`
-pub async fn all(auth: BearerAuth, pool: web::Data<PgPool>) -> HttpResponse
+// `/api/v1.0/network/id/{network_id}/device/id/{device_id}`
+pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<PgPool>) -> HttpResponse
 {
 	if(env!("NETWORKLOOKUP_BEARERTOKEN") != auth.token())
 	{
 		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
-	let query_response: Result<Vec<Network>, Error> = SELECT_Networks(pool.as_ref()).await;
+	let (Network_id, Device_id) = path.into_inner();
+	let query_response: Result<Device, Error> = SELECT_Device_by_Network_id_AND_Device_id(pool.as_ref(), Network_id, Device_id).await;
 	return query_to_response(query_response);
 }

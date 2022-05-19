@@ -12,5 +12,5 @@
 ########################################################################################################################
 
 
-export NETWORKIPLOOKUP_BEARERTOKEN=""
-export NETWORKIPLOOKUP_ROUTER_DOMAIN=""
+export NETWORKLOOKUP_BEARERTOKEN="Hello"
+export NETWORKLOOKUP_ROUTER_DOMAIN="localhost:8000"

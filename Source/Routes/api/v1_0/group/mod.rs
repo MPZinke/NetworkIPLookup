@@ -31,7 +31,7 @@ pub async fn index() -> HttpResponse
 	// SELECT_Network();
 	let body: &str = r#"
 	{
-		"/api/v1.0/groups": "List all groups",
+		"/api/v1.0/group/all": "List all groups",
 		"/api/v1.0/group/id": "Get a group by ID path",
 		"/api/v1.0/group/label": "Queries for group based on label"
 	}
@@ -44,7 +44,7 @@ pub async fn index() -> HttpResponse
 // `/api/v1.0/group/all`
 pub async fn all(auth: BearerAuth, pool: web::Data<PgPool>) -> HttpResponse
 {
-	if(env!("NETWORKIPLOOKUP_BEARERTOKEN") != auth.token())
+	if(env!("NETWORKLOOKUP_BEARERTOKEN") != auth.token())
 	{
 		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}

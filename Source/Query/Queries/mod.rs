@@ -12,5 +12,5 @@
 
 
 pub mod Group;
-pub mod IP;
+pub mod Device;
 pub mod Network;

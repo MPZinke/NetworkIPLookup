@@ -12,17 +12,22 @@
 
 
 all:
-	sudo apt-get install rust postgres
+	# As per https://www.rust-lang.org/tools/install
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	sudo apt-get install postgresql libssl-dev -y
+	# Ensure https://stackoverflow.com/questions/18664074/getting-error-peer-authentication-failed-for-user-postgres-when-trying-to-ge
+	sudo systemctl start postgresql.service
 
-	sudo createdb NetworkIPLookup
-	sudo psql -d NetworkIPLookup -f DB/Schema.sql
-	sudo psql -d NetworkIPLookup -f DB/Data.sql
+	sudo -U postgres createuser root
+	sudo -U postgres createdb -O root NetworkLookup
+	sudo psql -d NetworkLookup -f ../DB/Schema.sql
+	sudo psql -d NetworkLookup -f ../DB/Data.sql
 
 	bash ExportEnvironmentVariables.sh
 	cd ../Source
 	cargo build
 
-	sudo cp target/debug/NetworkIPLookup /usr/local/bin/
-	sudo cp ../Install/NetworkIPLookup.service /etc/systemd/system/
-	sudo systemctl enable NetworkIPLookup.service
-	sudo systemctl start NetworkIPLookup.service
+	sudo cp target/debug/NetworkLookup /usr/local/bin/
+	sudo cp ../Install/NetworkLookup.service /etc/systemd/system/
+	sudo systemctl enable NetworkLookup.service
+	sudo systemctl start NetworkLookup.service
