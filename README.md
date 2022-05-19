@@ -45,8 +45,8 @@ Additionally, the ping method can be used to determine if a device is active/res
 - `/api/v1.0`
 - `/api/v1.0/group`: "Queries for groups"
 - `/api/v1.0/group/all`: "List all groups"
-- `/api/v1.0/group/id`: "Get a group by ID path"
-- `/api/v1.0/group/id/{id}`: "Get a group by ID"
+- `/api/v1.0/group/id`: "Queries for group based on id"
+- `/api/v1.0/group/id/{id}`: "Get a group by id"
 - `/api/v1.0/group/label`: "Queries for group based on label"
 - `/api/v1.0/group/label/{label}`: "Get a group by label"
 - `/api/v1.0/network`: "Queries for networks"

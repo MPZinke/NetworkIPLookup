@@ -32,7 +32,7 @@ pub async fn index() -> HttpResponse
 	let body: &str = r#"
 	{
 		"/api/v1.0/group/all": "List all groups",
-		"/api/v1.0/group/id": "Get a group by ID path",
+		"/api/v1.0/group/id": "Queries for group based on id",
 		"/api/v1.0/group/label": "Queries for group based on label"
 	}
 	"#;

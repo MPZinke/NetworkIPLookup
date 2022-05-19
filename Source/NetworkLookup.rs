@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()>
 {
 	let host: &str = "localhost";
 	let user: &str = "root";
-	let DB_name: &str = "NetworkIPLookup";
+	let DB_name: &str = "NetworkLookup";
 
 	let connection_str: String = format!("postgres://{}@{}:5432/{}", user, host, DB_name);
 	let connection_pool: PgPool = PgPool::connect(&connection_str).await
