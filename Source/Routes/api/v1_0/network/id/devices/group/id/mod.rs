@@ -42,7 +42,7 @@ pub async fn id(auth: BearerAuth, path: web::Path<(i32, i32)>, pool: web::Data<P
 	}
 
 	let (Network_id, Group_id) = path.into_inner();
-	let query_response: Result<Vec<Device>, Error> = SELECT_Devices_by_Network_id_AND_Group_id(pool.as_ref(), Network_id,
-	  Group_id).await;
+	let query_response: Result<Vec<Device>, Error> = SELECT_Devices_by_Network_id_AND_Group_id(pool.as_ref(),
+	  Network_id, Group_id).await;
 	return query_to_response(query_response);
 }

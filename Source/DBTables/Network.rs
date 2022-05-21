@@ -11,10 +11,10 @@
 ***********************************************************************************************************************/
 
 
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Serialize)]
 pub struct Network
 {
 	pub label: String,

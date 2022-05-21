@@ -17,7 +17,7 @@
 
 
 mod DBTables;
-mod LookupUnknownIP;
+mod UnknownLookup;
 mod Query;
 mod Routes;
 

@@ -12,16 +12,16 @@
 
 
 use sqlx::{postgres::PgRow, Row};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 
 use crate::DBTables::Network::Network;
 
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Serialize)]
 pub struct Device
 {
-	pub address: String,
+	pub address: String,  //TODO: Convert to option
 	pub label: String,
 	pub is_reservation: bool,
 	pub is_static: bool,

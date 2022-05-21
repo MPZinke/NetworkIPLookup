@@ -42,7 +42,7 @@ pub async fn label(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web::
 	}
 
 	let (Network_id, Group_label) = path.into_inner();
-	let query_response: Result<Vec<Device>, Error> = SELECT_Devices_by_Network_id_AND_Group_label(pool.as_ref(), Network_id,
-	  &Group_label).await;
+	let query_response: Result<Vec<Device>, Error> = SELECT_Devices_by_Network_id_AND_Group_label(pool.as_ref(),
+	  Network_id, &Group_label).await;
 	return query_to_response(query_response);
 }

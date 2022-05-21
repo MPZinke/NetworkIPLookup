@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.09                                                                                                      *
+*   on 2022.05.21                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,22 +11,37 @@
 ***********************************************************************************************************************/
 
 
-use sqlx::{postgres::PgRow, Row};
-use serde::Serialize;
-
-
-#[derive(Debug, Serialize)]
-pub struct Group
+pub enum Expression
 {
-	pub id: i32,
-	pub label: String
+	ip(String),
+	label(String),
+	mac(String)
 }
 
 
-impl Group
+impl std::fmt::Debug for Expression
 {
-	pub fn new(row: &PgRow) -> Group
-	{
-		return Group{id: row.get("id"), label: row.get("label")};
-	}
+    fn fmt(&self, format: &mut std::fmt::Formatter) -> std::fmt::Result
+    {
+        match(self)
+        {
+        	Expression::ip(value) => write!(format, "{}", value),
+			Expression::label(value) => write!(format, "{}", value),
+			Expression::mac(value) => write!(format, "{}", value)
+        }
+    }
+}
+
+
+impl std::fmt::Display for Expression
+{
+    fn fmt(&self, format: &mut std::fmt::Formatter) -> std::fmt::Result
+    {
+        match(self)
+        {
+        	Expression::ip(_) => write!(format, "ip"),
+			Expression::label(_) => write!(format, "label"),
+			Expression::mac(_) => write!(format, "mac")
+        }
+    }
 }
