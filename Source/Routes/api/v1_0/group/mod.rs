@@ -28,7 +28,6 @@ use crate::Query::QueryError::QueryError as Error;
 // `/api/v1.0/group`
 pub async fn index() -> HttpResponse
 {
-	// SELECT_Network();
 	let body: &str = r#"
 	{
 		"/api/v1.0/group/all": "List all groups",

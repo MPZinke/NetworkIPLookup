@@ -18,8 +18,8 @@ all:
 	# Ensure https://stackoverflow.com/questions/18664074/getting-error-peer-authentication-failed-for-user-postgres-when-trying-to-ge
 	sudo systemctl start postgresql.service
 
-	sudo -U postgres createuser root
-	sudo -U postgres createdb -O root NetworkLookup
+	sudo -u postgres createuser root
+	sudo -u postgres createdb -O root NetworkLookup
 	sudo psql -d NetworkLookup -f ../DB/Schema.sql
 	sudo psql -d NetworkLookup -f ../DB/Data.sql
 
