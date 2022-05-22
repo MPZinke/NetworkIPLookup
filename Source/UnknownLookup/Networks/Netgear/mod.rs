@@ -11,7 +11,7 @@
 ***********************************************************************************************************************/
 
 
-use crate::DBTables::{Device::Device, Network::Network};
+use crate::DBTables::Device::Device;
 use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::UnknownLookup::{regex_and_default_to_empty_string, Networks::NetworkInterface};
 
@@ -24,12 +24,15 @@ impl NetworkInterface for Netgear
 	//TODO: Rework to get address, label, mac, etc.
 	fn convert_section_to_device(device: &DeviceAttributeSearch, network: &NetworkSearch, section: &String) -> Device
 	{
+		// let address_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
+		// let address: String = regex_and_default_to_empty_string(&address_regex, section);
 		let label_regex: String = r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string();
 		let label_section: String = regex_and_default_to_empty_string(&label_regex, section);
 		let label: String = label_section[4..label_section.len()-7].to_string();
-		let mac: String = regex_and_default_to_empty_string(&r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string(), section);
+		let mac_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
+		let mac: String = regex_and_default_to_empty_string(&mac_regex, section);
 
-		return Device{address: format!("{:?}", device), label: label, is_reservation: false, is_static: false, mac: Some(mac),
+		return Device{address: Some(device.attribute().clone()), label: label, is_reservation: false, is_static: false, mac: Some(mac),
 		  groups: vec![], Network: network.network().clone()};
 	}
 

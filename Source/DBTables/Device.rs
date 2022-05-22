@@ -15,25 +15,25 @@ use sqlx::{postgres::PgRow, Row};
 use serde::Serialize;
 
 
-use crate::DBTables::Network::Network;
+use crate::DBTables::{Group::Group, Network::Network};
 
 
 #[derive(Debug, Serialize)]
 pub struct Device
 {
-	pub address: String,  //TODO: Convert to option
+	pub address: Option<String>,
 	pub label: String,
 	pub is_reservation: bool,
 	pub is_static: bool,
 	pub mac: Option<String>,
-	pub groups: Vec<String>,
+	pub groups: Vec<Group>,
 	pub Network: Network
 }
 
 
 impl Device
 {
-	pub fn new(groups: Vec<String>, row: &PgRow) -> Device
+	pub fn new(groups: Vec<Group>, row: &PgRow) -> Device
 	{
 		return Device{address: row.get("address"), label: row.get("label"), is_reservation: row.get("is_reservation"),
 		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,

@@ -14,7 +14,7 @@
 use sqlx::{query, PgPool, postgres::PgRow, Row};
 
 
-use crate::DBTables::Device::Device;
+use crate::DBTables::{Device::Device, Group::Group};
 use crate::Query::QueryError::{NewNotFoundError, QueryError};
 use crate::Query::Queries::Group::{SELECT_Groups_by_Device_address, SELECT_Groups_by_Device_id, SELECT_Groups_by_Device_label};
 
@@ -43,7 +43,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_address(pool: &PgPool, Netwo
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_address(pool, &Device_address).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_address(pool, &Device_address).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -71,7 +71,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_address(pool: &PgPool, Ne
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_address(pool, &Device_address).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_address(pool, &Device_address).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -99,7 +99,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_id(pool: &PgPool, Network_id
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_id(pool, Device_id).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_id(pool, Device_id).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -128,7 +128,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_label(pool: &PgPool, Network
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -157,7 +157,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_id(pool: &PgPool, Network
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_id(pool, Device_id).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_id(pool, Device_id).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -186,7 +186,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Netw
 		return Err(NewNotFoundError(message));
 	}
 
-	let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+	let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 	return Ok(Device::new(groups, &result[0]));
 }
 
@@ -208,7 +208,7 @@ pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Res
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 
@@ -233,7 +233,7 @@ pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &Stri
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 
@@ -264,7 +264,7 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_id(pool: &PgPool, Network_id
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 
@@ -295,7 +295,7 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_label(pool: &PgPool, Network
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 
@@ -326,7 +326,7 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_id(pool: &PgPool, Network
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 
@@ -357,7 +357,7 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_label(pool: &PgPool, Netw
 	for row in result
 	{
 		let Device_label: String = row.get("label");
-		let groups: Vec<String> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
+		let groups: Vec<Group> = SELECT_Groups_by_Device_label(pool, &Device_label).await?;
 		devices.push(Device::new(groups, &row));
 	}
 

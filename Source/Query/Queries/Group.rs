@@ -11,7 +11,7 @@
 ***********************************************************************************************************************/
 
 
-use sqlx::{query, PgPool, postgres::PgRow, Row};
+use sqlx::{query, PgPool, postgres::PgRow};
 
 
 use crate::DBTables::Group::Group;
@@ -72,7 +72,7 @@ pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Grou
 
 // —————————————————————————————————————————————————— GROUP::BY Device —————————————————————————————————————————————————— //
 
-pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result<Vec<String>, QueryError>
+pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result<Vec<Group>, QueryError>
 {
 	let query_str: &str = concat!(
 	  "SELECT \"Group\".\"label\"\n",
@@ -83,16 +83,16 @@ pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result
 
 	let result: Vec<PgRow> = query(query_str).bind(Device_id).fetch_all(pool).await?;
 
-	let mut groups: Vec<String> = vec![];
+	let mut groups: Vec<Group> = vec![];
 	for row in result
 	{
-		groups.push(row.get(0));
+		groups.push(Group::new(&row));
 	}
 	return Ok(groups);
 }
 
 
-pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &String) -> Result<Vec<String>, QueryError>
+pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &String) -> Result<Vec<Group>, QueryError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."label"
@@ -103,16 +103,16 @@ pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &Str
 	"#;
 	let result: Vec<PgRow> = query(query_str).bind(Device_address).fetch_all(pool).await?;
 
-	let mut groups: Vec<String> = vec![];
+	let mut groups: Vec<Group> = vec![];
 	for row in result
 	{
-		groups.push(row.get(0));
+		groups.push(Group::new(&row));
 	}
 	return Ok(groups);
 }
 
 
-pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String) -> Result<Vec<String>, QueryError>
+pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String) -> Result<Vec<Group>, QueryError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."label"
@@ -123,10 +123,10 @@ pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String)
 	"#;
 	let result: Vec<PgRow> = query(query_str).bind(Device_label).fetch_all(pool).await?;
 
-	let mut groups: Vec<String> = vec![];
+	let mut groups: Vec<Group> = vec![];
 	for row in result
 	{
-		groups.push(row.get(0));
+		groups.push(Group::new(&row));
 	}
 	return Ok(groups);
 }

@@ -41,7 +41,7 @@ fn device_not_found_error(device: &DeviceAttributeSearch, network: &NetworkSearc
 async fn router_request(network: &NetworkSearch) -> Result<String, reqwest::Error>
 {
 	//TODO: Add header
-	return reqwest::get("http://localhost:8000/DEV_device_dev_id.htm").await?.text().await;
+	return reqwest::get(format!("http://{}/DEV_device_dev_id.htm", &network.network().gateway)).await?.text().await;
 }
 
 
