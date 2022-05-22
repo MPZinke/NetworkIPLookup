@@ -11,7 +11,7 @@
 ***********************************************************************************************************************/
 
 
-use crate::DBTables::{Device::Device, Network::Network};
+use crate::DBTables::Network::Network;
 
 
 pub enum DeviceAttributeSearch
@@ -52,13 +52,13 @@ impl std::fmt::Display for DeviceAttributeSearch
 
 impl DeviceAttributeSearch
 {
-	pub fn attribute(&self) -> String
+	pub fn attribute(&self) -> &String
 	{
 		return match(self)
 		{
-			DeviceAttributeSearch::address(address) => address.clone(),
-			DeviceAttributeSearch::label(label) => label.clone(),
-			DeviceAttributeSearch::mac(mac) => mac.clone()
+			DeviceAttributeSearch::address(address) => &address,
+			DeviceAttributeSearch::label(label) => &label,
+			DeviceAttributeSearch::mac(mac) => &mac
 		}
 	}
 }
@@ -101,12 +101,12 @@ impl std::fmt::Display for NetworkSearch
 
 impl NetworkSearch
 {
-	pub fn network(&self) -> Network
+	pub fn network(&self) -> &Network
 	{
 		return match(self)
 		{
-			NetworkSearch::id(network) => network.clone(),
-			NetworkSearch::label(network) => network.clone()
+			NetworkSearch::id(network) => &network,
+			NetworkSearch::label(network) => &network
 		}
 	}
 }

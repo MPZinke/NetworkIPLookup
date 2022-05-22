@@ -20,7 +20,8 @@ use crate::DBTables::{Device::Device, Network::Network};
 use crate::Query::{query_NotFound, query_to_response};
 use crate::Query::Queries::{Network::SELECT_Network_by_id, Device::SELECT_Device_by_Network_id_AND_Device_address};
 use crate::Query::QueryError::QueryError as Error;
-use crate::UnknownLookup::{lookup_device_on_network, SearchType::{DeviceAttributeSearch, NetworkSearch}};
+use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
+use crate::UnknownLookup::Networks::lookup_device;
 
 
 // `/api/v1.0/network/id/{network_id}/device/address`
@@ -44,11 +45,11 @@ pub async fn address(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web
 	}
 
 	let (Network_id, Device_address) = path.into_inner();
-	let query_response: Result<Device, Error> = SELECT_Device_by_Network_id_AND_Device_address(pool.as_ref(),
+	let device_result: Result<Device, Error> = SELECT_Device_by_Network_id_AND_Device_address(pool.as_ref(),
 	  Network_id, &Device_address).await;
 
 	// If not found in DB, try to find Device address by scanning network
-	if(query_NotFound(&query_response))
+	if(query_NotFound(&device_result))
 	{
 		// Check and make sure Network exists
 		let network_result: Result<Network, Error> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
@@ -59,10 +60,10 @@ pub async fn address(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web
 			Err(_) => return query_to_response(network_result)
 		};
 
-		let address_attribute = DeviceAttributeSearch::address(Device_address.clone());
-		let Device_lookup_result: Result<Device, Error> = lookup_device_on_network(&address_attribute, &network).await;
+		let address_attribute: DeviceAttributeSearch = DeviceAttributeSearch::address(Device_address.clone());
+		let Device_lookup_result: Result<Device, Error> = lookup_device(&address_attribute, &network).await;
 		return query_to_response(Device_lookup_result);
 	}
 
-	return query_to_response(query_response);
+	return query_to_response(device_result);
 }

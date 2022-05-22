@@ -12,7 +12,6 @@
 
 
 pub mod Networks;
-pub mod SearchType;
 
 
 use regex::Regex;
@@ -20,9 +19,9 @@ use reqwest;
 
 
 use crate::DBTables::Device::Device;
-use crate::DBTables::Network::Network;
-use crate::UnknownLookup::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::Query::QueryError::{NewNotFoundError, QueryError as Error};
+use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
+use crate::UnknownLookup::Networks::NetworkInterface;
 
 
 fn device_not_found_error(device: &DeviceAttributeSearch, network: &NetworkSearch) -> Error
@@ -42,13 +41,17 @@ fn device_not_found_error(device: &DeviceAttributeSearch, network: &NetworkSearc
 async fn router_request(network: &NetworkSearch) -> Result<String, reqwest::Error>
 {
 	//TODO: Add header
-	return reqwest::get(format!("http://{}/DEV_device_dev_id.htm", &network.network().gateway)).await?.text().await;
+	return reqwest::get("http://localhost:8000/DEV_device_dev_id.htm").await?.text().await;
 }
 
 
 fn filter_response_for_device_section(expression: String, response: &String) -> Option<String>
 {
-	let regex: Regex = Regex::new(&expression).unwrap();
+	let regex: Regex = match(Regex::new(&expression))
+	{
+		Ok(regex) => regex,
+		Err(_) => return None
+	};
 
 	match(regex.find(&response))
 	{
@@ -77,7 +80,9 @@ fn regex_and_default_to_empty_string(expression: &String, section: &String) -> S
 }
 
 
-pub async fn lookup_device_on_network(device: &DeviceAttributeSearch, network: &NetworkSearch) -> Result<Device, Error>
+pub async fn lookup_device_on_network<N>(device: &DeviceAttributeSearch, network: &NetworkSearch)
+  -> Result<Device, Error>
+  where N: NetworkInterface
 {
 	let response: String = match(router_request(&network).await)
 	{
@@ -85,7 +90,7 @@ pub async fn lookup_device_on_network(device: &DeviceAttributeSearch, network: &
 		Err(error) => return Err(NewNotFoundError(error.to_string()))
 	};
 
-	let expression: String = Networks::Netgear::device_expression(device);
+	let expression: String = N::device_expression(device);
 
 	let section: String = match(filter_response_for_device_section(expression, &response))
 	{
@@ -93,5 +98,5 @@ pub async fn lookup_device_on_network(device: &DeviceAttributeSearch, network: &
 		None => return Err(device_not_found_error(device, network))
 	};
 
-	return Ok(Networks::Netgear::convert_section_to_device(device, network, &section));
+	return Ok(N::convert_section_to_device(device, network, &section));
 }

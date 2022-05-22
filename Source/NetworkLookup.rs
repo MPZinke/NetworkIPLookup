@@ -17,9 +17,10 @@
 
 
 mod DBTables;
-mod UnknownLookup;
 mod Query;
 mod Routes;
+mod SearchType;
+mod UnknownLookup;
 
 
 use actix_web::{web, App, HttpServer};

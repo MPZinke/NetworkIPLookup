@@ -14,7 +14,7 @@
 use serde::Serialize;
 
 
-#[derive(Debug, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub struct Network
 {
 	pub id: i32,
