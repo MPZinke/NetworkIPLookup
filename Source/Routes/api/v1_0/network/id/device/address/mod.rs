@@ -20,7 +20,7 @@ use crate::DBTables::{Device::Device, Network::Network};
 use crate::Query::{query_NotFound, query_to_response};
 use crate::Query::Queries::{Network::SELECT_Network_by_id, Device::SELECT_Device_by_Network_id_AND_Device_address};
 use crate::Query::QueryError::QueryError as Error;
-use crate::UnknownLookup::{lookup_Device_on_network, Expression::Expression};
+use crate::UnknownLookup::{lookup_device_on_network, SearchType::{DeviceAttributeSearch, NetworkSearch}};
 
 
 // `/api/v1.0/network/id/{network_id}/device/address`
@@ -52,15 +52,15 @@ pub async fn address(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web
 	{
 		// Check and make sure Network exists
 		let network_result: Result<Network, Error> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
-		let network: Network = match(network_result)
+		let network: NetworkSearch = match(network_result)
 		{
-			Ok(network) => network,
+			Ok(network) => NetworkSearch::id(network),
 			// Allow both NotFound & DB Errors to reach top level. If DB goes wrong, it needs to be visible.
 			Err(_) => return query_to_response(network_result)
 		};
 
-		let address_expression = Expression::ip(Device_address.clone());
-		let Device_lookup_result: Result<Device, Error> = lookup_Device_on_network(&address_expression, network).await;
+		let address_attribute = DeviceAttributeSearch::address(Device_address.clone());
+		let Device_lookup_result: Result<Device, Error> = lookup_device_on_network(&address_attribute, &network).await;
 		return query_to_response(Device_lookup_result);
 	}
 

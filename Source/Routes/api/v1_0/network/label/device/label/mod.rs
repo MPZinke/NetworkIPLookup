@@ -20,7 +20,7 @@ use crate::DBTables::{Device::Device, Network::Network};
 use crate::Query::{query_NotFound, query_to_response};
 use crate::Query::Queries::{Network::SELECT_Network_by_label, Device::SELECT_Device_by_Network_label_AND_Device_label};
 use crate::Query::QueryError::QueryError as Error;
-use crate::UnknownLookup::{lookup_Device_on_network, Expression::Expression};
+use crate::UnknownLookup::{lookup_device_on_network, SearchType::{DeviceAttributeSearch, NetworkSearch}};
 
 
 // `/api/v1.0/network/label/{network_label}/device/label`
@@ -52,15 +52,15 @@ pub async fn label(auth: BearerAuth, path: web::Path<(String, String)>, pool: we
 	{
 		// Check and make sure Network exists
 		let network_result: Result<Network, Error> = SELECT_Network_by_label(pool.as_ref(), &Network_label).await;
-		let network: Network = match(network_result)
+		let network: NetworkSearch = match(network_result)
 		{
-			Ok(network) => network,
+			Ok(network) => NetworkSearch::label(network),
 			// Allow both NotFound & DB Errors to reach top level. If DB goes wrong, it needs to be visible.
 			Err(_) => return query_to_response(network_result)
 		};
 
-		let label_expression = Expression::label(Device_label.clone());
-		let Device_lookup_result: Result<Device, Error> = lookup_Device_on_network(&label_expression, network).await;
+		let label_attribute = DeviceAttributeSearch::label(Device_label.clone());
+		let Device_lookup_result: Result<Device, Error> = lookup_device_on_network(&label_attribute, &network).await;
 		return query_to_response(Device_lookup_result);
 	}
 

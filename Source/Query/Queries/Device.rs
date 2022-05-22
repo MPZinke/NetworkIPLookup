@@ -23,8 +23,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_address(pool: &PgPool, Netwo
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -52,8 +52,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_address(pool: &PgPool, Ne
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -80,8 +80,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_id(pool: &PgPool, Network_id
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -108,8 +108,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_label(pool: &PgPool, Network
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -137,8 +137,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_id(pool: &PgPool, Network
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -166,8 +166,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Netw
   -> Result<Device, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -194,8 +194,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Netw
 pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
@@ -219,8 +219,8 @@ pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Res
 pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &String) -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
@@ -245,8 +245,8 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_id(pool: &PgPool, Network_id
   -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
@@ -276,8 +276,8 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_label(pool: &PgPool, Network
   -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
@@ -307,8 +307,8 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_id(pool: &PgPool, Network
   -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
@@ -338,8 +338,8 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_label(pool: &PgPool, Netw
   -> Result<Vec<Device>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static",
-	    "Device"."mac", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
+	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
+	    "Network"."id" AS "Network.id", "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
