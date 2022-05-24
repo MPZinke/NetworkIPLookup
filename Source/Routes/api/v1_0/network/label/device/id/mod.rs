@@ -17,8 +17,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Device::Device;
-use crate::Query::{query_to_response, Queries::Device::SELECT_Device_by_Network_label_AND_Device_id};
-use crate::Query::QueryError::QueryError as Error;
+use crate::Query::{query_to_response, Device::SELECT_Device_by_Network_label_AND_Device_id};
+use crate::Query::QueryError;
 
 
 // `/api/v1.0/network/label/{network_label}/device/id`
@@ -42,7 +42,7 @@ pub async fn id(auth: BearerAuth, path: web::Path<(String, i32)>, pool: web::Dat
 	}
 
 	let (Network_label, Device_id) = path.into_inner();
-	let query_response: Result<Device, Error> = SELECT_Device_by_Network_label_AND_Device_id(pool.as_ref(),
+	let query_response: Result<Device, QueryError> = SELECT_Device_by_Network_label_AND_Device_id(pool.as_ref(),
 	  &Network_label, Device_id).await;
 	return query_to_response(query_response);
 }

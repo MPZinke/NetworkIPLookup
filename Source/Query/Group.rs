@@ -15,7 +15,7 @@ use sqlx::{query, PgPool, postgres::PgRow};
 
 
 use crate::DBTables::Group::Group;
-use crate::Query::QueryError::{NewNotFoundError, QueryError};
+use crate::Query::{NewNotFoundError, QueryError};
 
 
 pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<Group>, QueryError>
@@ -35,7 +35,6 @@ pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<Group>, QueryError>
 }
 
 
-//TODO: Convert to object
 pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Group, QueryError>
 {
 	let query_str: &str = r#"
@@ -74,12 +73,12 @@ pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Grou
 
 pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result<Vec<Group>, QueryError>
 {
-	let query_str: &str = concat!(
-	  "SELECT \"Group\".\"label\"\n",
-	  "FROM \"Group-Device\"\n",
-	  "JOIN \"Group\" ON \"Group-Device\".\"Group.id\" = \"Group\".\"id\"\n",
-	  "WHERE \"Group-Device\".\"Device.id\" = $1;\n"
-	);
+	let query_str: &str = r#"
+	  SELECT "Group"."id" AS "id", "Group"."label" AS "label"
+	  FROM "Group-Device"
+	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
+	  WHERE "Group-Device"."Device.id" = $1;
+	"#;
 
 	let result: Vec<PgRow> = query(query_str).bind(Device_id).fetch_all(pool).await?;
 
@@ -95,7 +94,7 @@ pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result
 pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &String) -> Result<Vec<Group>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Group"."label"
+	  SELECT "Group"."id" AS "id", "Group"."label"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
@@ -115,7 +114,7 @@ pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &Str
 pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String) -> Result<Vec<Group>, QueryError>
 {
 	let query_str: &str = r#"
-	  SELECT "Group"."label"
+	  SELECT "Group"."id" AS "id", "Group"."label" AS "label"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"

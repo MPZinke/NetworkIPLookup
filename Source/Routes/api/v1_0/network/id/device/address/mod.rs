@@ -18,8 +18,8 @@ use sqlx::postgres::PgPool;
 
 use crate::DBTables::{Device::Device, Network::Network};
 use crate::Query::{query_NotFound, query_to_response};
-use crate::Query::Queries::{Network::SELECT_Network_by_id, Device::SELECT_Device_by_Network_id_AND_Device_address};
-use crate::Query::QueryError::QueryError as Error;
+use crate::Query::{Network::SELECT_Network_by_id, Device::SELECT_Device_by_Network_id_AND_Device_address};
+use crate::Query::QueryError;
 use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::UnknownLookup::Networks::lookup_device;
 
@@ -45,24 +45,26 @@ pub async fn address(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web
 	}
 
 	let (Network_id, Device_address) = path.into_inner();
-	let device_result: Result<Device, Error> = SELECT_Device_by_Network_id_AND_Device_address(pool.as_ref(),
+	let device_result: Result<Device, QueryError> = SELECT_Device_by_Network_id_AND_Device_address(pool.as_ref(),
 	  Network_id, &Device_address).await;
 
 	// If not found in DB, try to find Device address by scanning network
 	if(query_NotFound(&device_result))
 	{
 		// Check and make sure Network exists
-		let network_result: Result<Network, Error> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
-		let network: NetworkSearch = match(network_result)
+		let network_result: Result<Network, QueryError> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
+		let network_search: NetworkSearch = match(network_result)
 		{
-			Ok(network) => NetworkSearch::id(network),
-			// Allow both NotFound & DB Errors to reach top level. If DB goes wrong, it needs to be visible.
-			Err(_) => return query_to_response(network_result)
+			Ok(network_search) => NetworkSearch::id(network_search),
+			Err(_) => return query_to_response(network_result)  // show both errors: DB errors need to be visible too
 		};
 
-		let address_attribute: DeviceAttributeSearch = DeviceAttributeSearch::address(Device_address.clone());
-		let Device_lookup_result: Result<Device, Error> = lookup_device(&address_attribute, &network).await;
-		return query_to_response(Device_lookup_result);
+		if(network_search.network().auth_value.is_some())
+		{
+			let address_attribute: DeviceAttributeSearch = DeviceAttributeSearch::address(Device_address.clone());
+			let lookup_result: Result<Device, QueryError> = lookup_device(&address_attribute, &network_search).await;
+			return query_to_response(lookup_result);
+		}
 	}
 
 	return query_to_response(device_result);

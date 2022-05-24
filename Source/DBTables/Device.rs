@@ -37,8 +37,8 @@ impl Device
 	{
 		return Device{address: row.get("address"), label: row.get("label"), is_reservation: row.get("is_reservation"),
 		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,
-		  Network: Network::new(row.get("Network.id"), row.get("Network.label"), row.get("Network.gateway"),
-		    row.get("Network.netmask")
+		  Network: Network::new(row.get("Network.id"), row.get("Network.auth_value"), row.get("Network.label"),
+		    row.get("Network.gateway"), row.get("Network.netmask")
 		  )
 		};
 	}

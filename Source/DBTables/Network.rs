@@ -18,6 +18,7 @@ use serde::Serialize;
 pub struct Network
 {
 	pub id: i32,
+	pub auth_value: Option<String>,
 	pub label: String,
 	pub gateway: String,
 	pub netmask: String
@@ -26,9 +27,9 @@ pub struct Network
 
 impl Network
 {
-	pub fn new(id: i32, label: String, gateway: String, netmask: String) -> Network
+	pub fn new(id: i32, auth_value: Option<String>, label: String, gateway: String, netmask: String) -> Network
 	{
-		return Network{id: id, label: label, gateway: gateway, netmask: netmask};
+		return Network{id: id, auth_value: auth_value, label: label, gateway: gateway, netmask: netmask};
 	}
 }
 

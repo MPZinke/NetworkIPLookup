@@ -21,8 +21,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Network::Network;
-use crate::Query::{query_to_response, Queries::Network::SELECT_Networks};
-use crate::Query::QueryError::QueryError as Error;
+use crate::Query::{query_to_response, Network::SELECT_Networks};
+use crate::Query::QueryError;
 
 
 // `/api/v1.0/network`
@@ -48,6 +48,6 @@ pub async fn all(auth: BearerAuth, pool: web::Data<PgPool>) -> HttpResponse
 		return HttpResponse::Unauthorized().insert_header(ContentType::json()).body(r#"{"error": "Unauthorized"}"#);
 	}
 
-	let query_response: Result<Vec<Network>, Error> = SELECT_Networks(pool.as_ref()).await;
+	let query_response: Result<Vec<Network>, QueryError> = SELECT_Networks(pool.as_ref()).await;
 	return query_to_response(query_response);
 }

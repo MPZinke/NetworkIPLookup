@@ -21,8 +21,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Network::Network;
-use crate::Query::QueryError::QueryError as Error;
-use crate::Query::{query_to_response, Queries::Network::SELECT_Network_by_label};
+use crate::Query::QueryError;
+use crate::Query::{query_to_response, Network::SELECT_Network_by_label};
 
 
 // `/api/v1.0/network/label`
@@ -48,6 +48,6 @@ pub async fn label(auth: BearerAuth, path: web::Path<String>, pool: web::Data<Pg
 	}
 
 	let label = path.into_inner();
-	let query_response: Result<Network, Error> = SELECT_Network_by_label(pool.as_ref(), &label).await;
+	let query_response: Result<Network, QueryError> = SELECT_Network_by_label(pool.as_ref(), &label).await;
 	return query_to_response(query_response);
 }

@@ -18,8 +18,8 @@ use sqlx::postgres::PgPool;
 
 use crate::DBTables::{Device::Device, Network::Network};
 use crate::Query::{query_NotFound, query_to_response};
-use crate::Query::Queries::{Network::SELECT_Network_by_label, Device::SELECT_Device_by_Network_label_AND_Device_label};
-use crate::Query::QueryError::QueryError as Error;
+use crate::Query::{Network::SELECT_Network_by_label, Device::SELECT_Device_by_Network_label_AND_Device_label};
+use crate::Query::QueryError;
 use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::UnknownLookup::Networks::lookup_device;
 
@@ -45,24 +45,26 @@ pub async fn label(auth: BearerAuth, path: web::Path<(String, String)>, pool: we
 	}
 
 	let (Network_label, Device_label) = path.into_inner();
-	let device_result: Result<Device, Error> = SELECT_Device_by_Network_label_AND_Device_label(pool.as_ref(),
+	let device_result: Result<Device, QueryError> = SELECT_Device_by_Network_label_AND_Device_label(pool.as_ref(),
 	  &Network_label, &Device_label).await;
 
 	// If not found in DB, try to find Device label by scanning network
 	if(query_NotFound(&device_result))
 	{
 		// Check and make sure Network exists
-		let network_result: Result<Network, Error> = SELECT_Network_by_label(pool.as_ref(), &Network_label).await;
-		let network: NetworkSearch = match(network_result)
+		let network_result: Result<Network, QueryError> = SELECT_Network_by_label(pool.as_ref(), &Network_label).await;
+		let network_search: NetworkSearch = match(network_result)
 		{
-			Ok(network) => NetworkSearch::label(network),
-			// Allow both NotFound & DB Errors to reach top level. If DB goes wrong, it needs to be visible.
-			Err(_) => return query_to_response(network_result)
+			Ok(network_search) => NetworkSearch::label(network_search),
+			Err(_) => return query_to_response(network_result)  // åœ
 		};
 
-		let label_attribute: DeviceAttributeSearch = DeviceAttributeSearch::label(Device_label.clone());
-		let Device_lookup_result: Result<Device, Error> = lookup_device(&label_attribute, &network).await;
-		return query_to_response(Device_lookup_result);
+		if(network_search.network().auth_value.is_some())
+		{
+			let label_attribute: DeviceAttributeSearch = DeviceAttributeSearch::label(Device_label.clone());
+			let lookup_result: Result<Device, QueryError> = lookup_device(&label_attribute, &network_search).await;
+			return query_to_response(lookup_result);
+		}
 	}
 
 	return query_to_response(device_result);

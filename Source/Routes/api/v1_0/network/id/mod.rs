@@ -21,8 +21,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Network::Network;
-use crate::Query::{query_to_response, Queries::Network::SELECT_Network_by_id};
-use crate::Query::QueryError::QueryError as Error;
+use crate::Query::{query_to_response, Network::SELECT_Network_by_id};
+use crate::Query::QueryError;
 
 
 // `/api/v1.0/network/id`
@@ -48,6 +48,6 @@ pub async fn id(auth: BearerAuth, path: web::Path<i32>, pool: web::Data<PgPool>)
 	}
 
 	let id = path.into_inner();
-	let query_response: Result<Network, Error> = SELECT_Network_by_id(pool.as_ref(), id).await;
+	let query_response: Result<Network, QueryError> = SELECT_Network_by_id(pool.as_ref(), id).await;
 	return query_to_response(query_response);
 }

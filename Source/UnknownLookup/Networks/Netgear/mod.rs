@@ -21,23 +21,10 @@ pub struct Netgear;
 
 impl NetworkInterface for Netgear
 {
-	//TODO: Rework to get address, label, mac, etc.
-	fn convert_section_to_device(device: &DeviceAttributeSearch, network: &NetworkSearch, section: &String) -> Device
-	{
-		// let address_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
-		// let address: String = regex_and_default_to_empty_string(&address_regex, section);
-		let label_regex: String = r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string();
-		let label_section: String = regex_and_default_to_empty_string(&label_regex, section);
-		let label: String = label_section[4..label_section.len()-7].to_string();
-		let mac_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
-		let mac: String = regex_and_default_to_empty_string(&mac_regex, section);
-
-		return Device{address: Some(device.attribute().clone()), label: label, is_reservation: false, is_static: false, mac: Some(mac),
-		  groups: vec![], Network: network.network().clone()};
-	}
+	const ATTACHED_DEVICES_PATH: &'static str = "DEV_device_dev_id.htm";
 
 
-	fn device_expression(device: &DeviceAttributeSearch) -> String
+	fn build_device_expression(device: &DeviceAttributeSearch) -> String
 	{
 		let mut address_attribute: String = r"([0-9]{1,3}.){3}[0-9]{1,3}".to_string();
 		let mut label_attribute: String = r"[\(\)_\s*\-:#&a-zA-Z0-9]*".to_string();
@@ -62,6 +49,20 @@ impl NetworkInterface for Netgear
 		  mac_attribute, label_attribute, address_attribute, mac_attribute);
 	}
 
+
+	fn convert_section_to_device(network: &NetworkSearch, section: &String) -> Device
+	{
+		let address_regex: String = r"([0-9]{1,3}.){3}[0-9]{1,3}".to_string();
+		let address: String = regex_and_default_to_empty_string(&address_regex, section);
+		let label_regex: String = r"<br>[\(\)_ \-:#&a-zA-Z0-9]*</span>".to_string();
+		let label_section: String = regex_and_default_to_empty_string(&label_regex, section);
+		let label: String = label_section[4..label_section.len()-7].to_string();
+		let mac_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
+		let mac: String = regex_and_default_to_empty_string(&mac_regex, section);
+
+		return Device{address: Some(address), label: label, is_reservation: false, is_static: false, mac: Some(mac),
+		  groups: vec![], Network: network.network().clone()};
+	}	
 }
 
 

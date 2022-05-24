@@ -22,7 +22,8 @@
 ***********************************************************************************************************************/
 
 
-INSERT INTO "Network" ("label", "gateway", "netmask") VALUES ('Home', '192.168.1.1', '255.255.255.0');
+INSERT INTO "Network" ("auth_value", "label", "gateway", "netmask") VALUES
+('Basic SGVsbG86V29ybGQK', 'Home', '192.168.1.1', '255.255.255.0');
 
 
 INSERT INTO "Device" ("address", "label", "is_reservation", "is_static", "mac", "Network.id")
@@ -30,55 +31,40 @@ SELECT "Temp"."address", "Temp"."label", "Temp"."is_reservation", "Temp"."is_sta
 FROM
 (
 	VALUES
-	('192.168.1.2', 'Resevered-2', FALSE, TRUE, NULL),
-	('192.168.1.3', 'Resevered-3', FALSE, TRUE, NULL),
-	('192.168.1.4', 'Resevered-4', FALSE, TRUE, NULL),
-	('192.168.1.5', 'Resevered-5', FALSE, TRUE, NULL),
-	('192.168.1.6', 'Resevered-6', FALSE, TRUE, NULL),
-	('192.168.1.7', 'Resevered-7', FALSE, TRUE, NULL),
-	('192.168.1.8', 'Resevered-8', FALSE, TRUE, NULL),
-	('192.168.1.9', 'Resevered-9', FALSE, TRUE, NULL),
-	('192.168.1.10', 'Resevered-10', FALSE, TRUE, NULL),
+	('192.168.1.2', 'Device-2', TRUE, FALSE, NULL),
+	('192.168.1.3', 'Device-3', TRUE, FALSE, NULL),
+	('192.168.1.4', 'Device-4', TRUE, FALSE, NULL),
+	('192.168.1.5', 'Device-5', TRUE, FALSE, NULL),
 	-- Livingroom
-	('192.168.1.11', 'Resevered-11', FALSE, TRUE, NULL),
-	('192.168.1.12', 'Resevered-12', FALSE, TRUE, NULL),
-	('192.168.1.13', 'Resevered-13', FALSE, TRUE, NULL),
-	('192.168.1.14', 'Resevered-14', FALSE, TRUE, NULL),
-	('192.168.1.15', 'Resevered-15', FALSE, TRUE, NULL),
-	('192.168.1.16', 'Resevered-16', FALSE, TRUE, NULL),
-	('192.168.1.17', 'Resevered-17', FALSE, TRUE, NULL),
-	('192.168.1.18', 'Resevered-18', FALSE, TRUE, NULL),
-	('192.168.1.19', 'Resevered-19', FALSE, TRUE, NULL),
-	('192.168.1.20', 'Resevered-20', FALSE, TRUE, NULL),
+	('192.168.1.6', 'Device-6', TRUE, FALSE, NULL),
+	('192.168.1.7', 'Device-7', TRUE, FALSE, NULL),
+	('192.168.1.8', 'Device-8', TRUE, FALSE, NULL),
+	('192.168.1.9', 'Device-9', TRUE, FALSE, NULL),
+	('192.168.1.10', 'Device-10', TRUE, FALSE, NULL),
 	-- Bedroom
-	('192.168.1.21', 'Resevered-21', FALSE, TRUE, NULL),
-	('192.168.1.22', 'Resevered-22', FALSE, TRUE, NULL),
-	('192.168.1.23', 'Resevered-23', FALSE, TRUE, NULL),
-	('192.168.1.24', 'Resevered-24', FALSE, TRUE, NULL),
-	('192.168.1.25', 'Resevered-25', FALSE, TRUE, NULL),
-	('192.168.1.26', 'Resevered-26', FALSE, TRUE, NULL),
-	('192.168.1.27', 'Resevered-27', FALSE, TRUE, NULL),
-	('192.168.1.28', 'Resevered-28', FALSE, TRUE, NULL),
-	('192.168.1.29', 'Resevered-29', FALSE, TRUE, NULL),
-	('192.168.1.30', 'Resevered-30', FALSE, TRUE, NULL),
+	('192.168.1.11', 'Device-11', TRUE, FALSE, NULL),
+	('192.168.1.12', 'Device-12', TRUE, FALSE, NULL),
+	('192.168.1.13', 'Device-13', TRUE, FALSE, NULL),
+	('192.168.1.14', 'Device-14', TRUE, FALSE, NULL),
+	('192.168.1.15', 'Resevered-15', TRUE, TRUE, NULL),
 	-- Kitchen
-	('192.168.1.31', 'Resevered-31', FALSE, TRUE, NULL),
-	('192.168.1.32', 'Resevered-32', FALSE, TRUE, NULL),
-	('192.168.1.33', 'Resevered-33', FALSE, TRUE, NULL),
-	('192.168.1.34', 'Resevered-34', FALSE, TRUE, NULL),
-	('192.168.1.35', 'Resevered-35', FALSE, TRUE, NULL),
+	('192.168.1.16', 'Device-16', TRUE, FALSE, NULL),
+	('192.168.1.17', 'Device-17', TRUE, FALSE, NULL),
+	('192.168.1.18', 'Device-18', TRUE, FALSE, NULL),
+	('192.168.1.19', 'Device-19', TRUE, FALSE, NULL),
+	('192.168.1.20', 'Device-20', TRUE, FALSE, NULL),
 	-- Computers
-	('192.168.1.36', 'Resevered-36', FALSE, TRUE, NULL),
-	('192.168.1.37', 'Resevered-37', FALSE, TRUE, NULL),
-	('192.168.1.38', 'Resevered-38', FALSE, TRUE, NULL),
-	('192.168.1.39', 'Resevered-39', FALSE, TRUE, NULL),
-	('192.168.1.40', 'Resevered-40', FALSE, TRUE, NULL),
+	('192.168.1.21', 'Device-21', TRUE, FALSE, NULL),
+	('192.168.1.22', 'Device-22', TRUE, FALSE, NULL),
+	('192.168.1.23', 'Device-23', TRUE, FALSE, NULL),
+	('192.168.1.24', 'Device-24', TRUE, FALSE, NULL),
+	('192.168.1.25', 'Device-25', TRUE, FALSE, NULL),
 	-- Mobile
-	('192.168.1.41', 'Resevered-41', FALSE, TRUE, NULL),
-	('192.168.1.42', 'Resevered-42', FALSE, TRUE, NULL),
-	('192.168.1.43', 'Resevered-43', FALSE, TRUE, NULL),
-	('192.168.1.44', 'Resevered-44', FALSE, TRUE, NULL),
-	('192.168.1.45', 'Resevered-45', FALSE, TRUE, NULL)
+	('192.168.1.26', 'Device-26', TRUE, FALSE, NULL),
+	('192.168.1.27', 'Device-27', TRUE, FALSE, NULL),
+	('192.168.1.28', 'Device-28', TRUE, FALSE, NULL),
+	('192.168.1.29', 'Device-29', TRUE, FALSE, NULL),
+	('192.168.1.30', 'Device-30', TRUE, FALSE, NULL)
 ) AS "Temp"("address", "label", "is_reservation", "is_static", "mac")
 JOIN "Network" ON "Network"."label" = 'Home';
 
@@ -104,17 +90,13 @@ INSERT INTO "Group" ("label") VALUES
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'House'
-WHERE "Device"."address" IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.2',
-	'192.168.1.3',
-	'192.168.1.4',
-	'192.168.1.5',
-	'192.168.1.6',
-	'192.168.1.7',
-	'192.168.1.8',
-	'192.168.1.9',
-	'192.168.1.10'
+	('Device-2', 'Home'),
+	('Device-3', 'Home'),
+	('Device-4', 'Home'),
+	('Device-5', 'Home')
 );
 
 
@@ -122,18 +104,14 @@ WHERE "Device"."address" IN
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Livingroom'
-WHERE "Device"."address" IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.11',
-	'192.168.1.12',
-	'192.168.1.13',
-	'192.168.1.14',
-	'192.168.1.15',
-	'192.168.1.16',
-	'192.168.1.17',
-	'192.168.1.18',
-	'192.168.1.19',
-	'192.168.1.20'
+	('Device-6', 'Home'),
+	('Device-7', 'Home'),
+	('Device-8', 'Home'),
+	('Device-9', 'Home'),
+	('Device-10', 'Home')
 );
 
 
@@ -141,18 +119,14 @@ WHERE "Device"."address" IN
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Bedroom'
-WHERE "Device"."address" IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.21',
-	'192.168.1.22',
-	'192.168.1.23',
-	'192.168.1.24',
-	'192.168.1.25',
-	'192.168.1.26',
-	'192.168.1.27',
-	'192.168.1.28',
-	'192.168.1.29',
-	'192.168.1.30'
+	('Device-11', 'Home'),
+	('Device-12', 'Home'),
+	('Device-13', 'Home'),
+	('Device-14', 'Home'),
+	'Resevered-15'
 );
 
 
@@ -160,13 +134,14 @@ WHERE "Device"."address" IN
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Kitchen'
-WHERE "Device"."address" IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.31',
-	'192.168.1.32',
-	'192.168.1.33',
-	'192.168.1.34',
-	'192.168.1.35'
+	('Device-16', 'Home'),
+	('Device-17', 'Home'),
+	('Device-18', 'Home'),
+	('Device-19', 'Home'),
+	('Device-20', 'Home')
 );
 
 
@@ -176,13 +151,14 @@ WHERE "Device"."address" IN
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
 JOIN "Group" ON "Group"."label" = 'Computer'
-WHERE "Device"."address" IN
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.36',
-	'192.168.1.37',
-	'192.168.1.38',
-	'192.168.1.39',
-	'192.168.1.40'
+	('Device-21', 'Home'),
+	('Device-22', 'Home'),
+	('Device-23', 'Home'),
+	('Device-24', 'Home'),
+	('Device-25', 'Home')
 );
 
 
@@ -191,14 +167,15 @@ WHERE "Device"."address" IN
 -- Mobile
 INSERT INTO "Group-Device" ("Group.id", "Device.id")
 SELECT "Group"."id", "Device"."id" FROM "Device"
-JOIN "Group" ON "Group"."label" = 'Mobile'
-WHERE "Device"."address" IN
+JOIN "Group" ON "Group"."label" = 'Phone'
+JOIN "Network" ON "Device"."Network.id" = "Network"."id"
+WHERE ("Device"."label", "Network"."label") IN
 (
-	'192.168.1.41',
-	'192.168.1.42',
-	'192.168.1.43',
-	'192.168.1.44',
-	'192.168.1.45'
+	('Device-26', 'Home'),
+	('Device-27', 'Home'),
+	('Device-28', 'Home'),
+	('Device-29', 'Home'),
+	('Device-30', 'Home')
 );
 
 -- ———————————————————————————————————————————— GROUPS::ENTERTAINMENT ———————————————————————————————————————————— --
