@@ -17,6 +17,7 @@
 
 
 mod DBTables;
+mod LookupError;
 mod Query;
 mod Routes;
 mod SearchType;

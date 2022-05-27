@@ -15,10 +15,10 @@ use sqlx::{query, PgPool, postgres::PgRow};
 
 
 use crate::DBTables::Group::Group;
-use crate::Query::{NewNotFoundError, QueryError};
+use crate::LookupError::{NewNotFoundError, LookupError};
 
 
-pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<Group>, QueryError>
+pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<Group>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "label"
@@ -35,7 +35,7 @@ pub async fn SELECT_Groups(pool: &PgPool) -> Result<Vec<Group>, QueryError>
 }
 
 
-pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Group, QueryError>
+pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Group, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "label"
@@ -52,7 +52,7 @@ pub async fn SELECT_Group_by_id(pool: &PgPool, id: i32) -> Result<Group, QueryEr
 }
 
 
-pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Group, QueryError>
+pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Group, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "label"
@@ -71,7 +71,7 @@ pub async fn SELECT_Group_by_label(pool: &PgPool, label: &String) -> Result<Grou
 
 // —————————————————————————————————————————————————— GROUP::BY Device —————————————————————————————————————————————————— //
 
-pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result<Vec<Group>, QueryError>
+pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result<Vec<Group>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."id" AS "id", "Group"."label" AS "label"
@@ -91,7 +91,7 @@ pub async fn SELECT_Groups_by_Device_id(pool: &PgPool, Device_id: i32) -> Result
 }
 
 
-pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &String) -> Result<Vec<Group>, QueryError>
+pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &String) -> Result<Vec<Group>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."id" AS "id", "Group"."label"
@@ -111,7 +111,7 @@ pub async fn SELECT_Groups_by_Device_address(pool: &PgPool, Device_address: &Str
 }
 
 
-pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String) -> Result<Vec<Group>, QueryError>
+pub async fn SELECT_Groups_by_Device_label(pool: &PgPool, Device_label: &String) -> Result<Vec<Group>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Group"."id" AS "id", "Group"."label" AS "label"

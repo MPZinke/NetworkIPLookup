@@ -17,8 +17,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Group::Group;
+use crate::LookupError::LookupError;
 use crate::Query::{query_to_response, Group::SELECT_Group_by_id};
-use crate::Query::QueryError;
 
 
 // `/api/v1.0/group/id`
@@ -43,6 +43,6 @@ pub async fn id(auth: BearerAuth, path: web::Path<i32>, pool: web::Data<PgPool>)
 	}
 
 	let id = path.into_inner();
-	let query_response: Result<Group, QueryError> = SELECT_Group_by_id(pool.as_ref(), id).await;
+	let query_response: Result<Group, LookupError> = SELECT_Group_by_id(pool.as_ref(), id).await;
 	return query_to_response(query_response);
 }

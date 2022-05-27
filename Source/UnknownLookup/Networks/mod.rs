@@ -15,7 +15,7 @@ pub mod Netgear;
 
 
 use crate::DBTables::Device::Device;
-use crate::Query::QueryError;
+use crate::LookupError::LookupError;
 use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::UnknownLookup;
 
@@ -24,12 +24,12 @@ use crate::UnknownLookup;
 pub trait NetworkInterface
 {
 	const ATTACHED_DEVICES_PATH: &'static str;
-	fn build_device_expression(device: &DeviceAttributeSearch) -> String;
-	fn convert_section_to_device(network: &NetworkSearch, section: &String) -> Device;
+	fn parse_response_to_section(device: &DeviceAttributeSearch, response: &String) -> Option<String>;
+	fn parse_section_to_device(network: &NetworkSearch, section: &String) -> Device;
 }
 
 
-pub async fn lookup_device(device: &DeviceAttributeSearch, network: &NetworkSearch) -> Result<Device, QueryError>
+pub async fn lookup_device(device: &DeviceAttributeSearch, network: &NetworkSearch) -> Result<Device, LookupError>
 {
 	match(network.network().label.as_ref())
 	{

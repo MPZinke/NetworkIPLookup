@@ -17,9 +17,9 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::{Device::Device, Network::Network};
+use crate::LookupError::LookupError;
 use crate::Query::{query_NotFound, query_to_response};
 use crate::Query::{Network::SELECT_Network_by_id, Device::SELECT_Device_by_Network_id_AND_Device_label};
-use crate::Query::QueryError;
 use crate::SearchType::{DeviceAttributeSearch, NetworkSearch};
 use crate::UnknownLookup::Networks::lookup_device;
 
@@ -45,14 +45,14 @@ pub async fn label(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web::
 	}
 
 	let (Network_id, Device_label) = path.into_inner();
-	let device_result: Result<Device, QueryError> = SELECT_Device_by_Network_id_AND_Device_label(pool.as_ref(), Network_id,
-	  &Device_label).await;
+	let device_result: Result<Device, LookupError> = SELECT_Device_by_Network_id_AND_Device_label(pool.as_ref(),
+	  Network_id, &Device_label).await;
 
 	// If not found in DB, try to find Device label by scanning network
 	if(query_NotFound(&device_result))
 	{
 		// Check and make sure Network exists
-		let network_result: Result<Network, QueryError> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
+		let network_result: Result<Network, LookupError> = SELECT_Network_by_id(pool.as_ref(), Network_id).await;
 		let network_search: NetworkSearch = match(network_result)
 		{
 			Ok(network_search) => NetworkSearch::id(network_search),
@@ -62,7 +62,7 @@ pub async fn label(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web::
 		if(network_search.network().auth_value.is_some())
 		{
 			let label_attribute: DeviceAttributeSearch = DeviceAttributeSearch::label(Device_label.clone());
-			let lookup_result: Result<Device, QueryError> = lookup_device(&label_attribute, &network_search).await;
+			let lookup_result: Result<Device, LookupError> = lookup_device(&label_attribute, &network_search).await;
 			return query_to_response(lookup_result);
 		}
 	}

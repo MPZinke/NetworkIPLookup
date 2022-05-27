@@ -21,7 +21,16 @@ use serde_json;
 use serde::Serialize;
 
 
-pub fn query_NotFound<T: Serialize>(generic_query: &Result<T, QueryError>) -> bool
+use crate::LookupError::LookupError;
+
+
+/*
+SUMMARY: Determines whether the query is a NotFound LookupError.
+PARAMS:  Takes the generic Response.
+DETAILS: Unwraps the Result & LookupError if Result is an LookupError.
+RETURNS: If the unwrapped LookupError is NotFound, returns True, otherwise False.
+*/
+pub fn query_NotFound<T: Serialize>(generic_query: &Result<T, LookupError>) -> bool
 {
 	match(generic_query)
 	{
@@ -31,15 +40,26 @@ pub fn query_NotFound<T: Serialize>(generic_query: &Result<T, QueryError>) -> bo
 		{
 			match(error)
 			{
-				QueryError::Postgres(_) => return false,
-				QueryError::NotFound(_) => return true
+				LookupError::NotFound(_) => return true,
+				LookupError::Generic(_) => return false,
+				LookupError::InvalidHeader(_) => return false,
+				LookupError::Postgres(_) => return false,
+				LookupError::Request(_) => return false
 			}
 		}
 	}
 }
 
 
-pub fn query_to_response<T: Serialize>(generic_query: Result<T, QueryError>) -> HttpResponse
+/*
+SUMMARY: Unwraps the Result and returns an HttpResponse type.
+PARAMS:  Takes the generic Result to unwrap.
+DETAILS: Unwraps the Result. If Result is Ok, then it attempts to convert the result to a JSON. If the Result is an
+         error or fails to convert the result to a JSON, the corresponding response type is selected and the error
+         is sent as a JSON.
+RETURNS: An HttpResponse with a value or error body.
+*/
+pub fn query_to_response<T: Serialize>(generic_query: Result<T, LookupError>) -> HttpResponse
 {
 	let response_generic: T = match(generic_query)
 	{
@@ -48,8 +68,11 @@ pub fn query_to_response<T: Serialize>(generic_query: Result<T, QueryError>) -> 
 		{
 			let response: fn() -> HttpResponseBuilder = match(error)
 			{
-				QueryError::Postgres(_) => HttpResponse::InternalServerError,
-				QueryError::NotFound(_) => HttpResponse::NotFound
+				LookupError::NotFound(_) => HttpResponse::NotFound,
+				LookupError::Generic(_) => HttpResponse::InternalServerError,
+				LookupError::InvalidHeader(_) => HttpResponse::InternalServerError,
+				LookupError::Postgres(_) => HttpResponse::InternalServerError,
+				LookupError::Request(_) => HttpResponse::InternalServerError
 			};
 			let error_message: String = format!(r#"{{"error": "{}"}}"#, error);
 			return response().insert_header(ContentType::json()).body(error_message);
@@ -66,56 +89,3 @@ pub fn query_to_response<T: Serialize>(generic_query: Result<T, QueryError>) -> 
 		}
 	}
 }
-
-
-// ——————————————————————————————————————————————————— ERROR ENUM ——————————————————————————————————————————————————— //
-
-// FROM: https://fettblog.eu/rust-enums-wrapping-errors/
-//  AND: https://doc.rust-lang.org/rust-by-example/error/multiple_error_types/wrap_error.html
-
-#[derive(Debug)]
-pub enum QueryError
-{
-    Postgres(sqlx::error::Error),
-    NotFound(std::io::Error),
-}
-
-
-impl std::fmt::Display for QueryError
-{
-    fn fmt(&self, format: &mut std::fmt::Formatter) -> std::fmt::Result
-    {
-        match(self)
-        {
-            QueryError::Postgres(error) => write!(format, "{}", error),
-            QueryError::NotFound(error) => write!(format, "{}", error),
-        }
-    }
-}
-
-
-impl From<sqlx::error::Error> for QueryError
-{
-    fn from(err: sqlx::error::Error) -> Self
-    {
-        QueryError::Postgres(err)
-    }
-}
-
-
-impl From<std::io::Error> for QueryError
-{
-    fn from(err: std::io::Error) -> Self
-    {
-        QueryError::NotFound(err)
-    }
-}
-
-
-// ———————————————————————————————————————————————— HELPER FUNCTIONS ———————————————————————————————————————————————— //
-
-pub fn NewNotFoundError(message: String) -> QueryError
-{
-	return QueryError::NotFound(std::io::Error::new(std::io::ErrorKind::NotFound, message));
-}
-

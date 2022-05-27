@@ -17,8 +17,8 @@ use sqlx::postgres::PgPool;
 
 
 use crate::DBTables::Device::Device;
+use crate::LookupError::LookupError;
 use crate::Query::{query_to_response, Device::SELECT_Devices_by_Network_id_AND_Group_label};
-use crate::Query::QueryError;
 
 
 // `/api/v1.0/network/id/{network_id}/devices/group`
@@ -42,7 +42,7 @@ pub async fn label(auth: BearerAuth, path: web::Path<(i32, String)>, pool: web::
 	}
 
 	let (Network_id, Group_label) = path.into_inner();
-	let query_response: Result<Vec<Device>, QueryError> = SELECT_Devices_by_Network_id_AND_Group_label(pool.as_ref(),
+	let query_response: Result<Vec<Device>, LookupError> = SELECT_Devices_by_Network_id_AND_Group_label(pool.as_ref(),
 	  Network_id, &Group_label).await;
 	return query_to_response(query_response);
 }

@@ -15,12 +15,12 @@ use sqlx::{query, PgPool, postgres::PgRow, Row};
 
 
 use crate::DBTables::{Device::Device, Group::Group};
-use crate::Query::{NewNotFoundError, QueryError};
+use crate::LookupError::{LookupError, NewNotFoundError};
 use crate::Query::Group::{SELECT_Groups_by_Device_address, SELECT_Groups_by_Device_id, SELECT_Groups_by_Device_label};
 
 
 pub async fn SELECT_Device_by_Network_id_AND_Device_address(pool: &PgPool, Network_id: i32, Device_address: &String)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -50,7 +50,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_address(pool: &PgPool, Netwo
 
 
 pub async fn SELECT_Device_by_Network_label_AND_Device_address(pool: &PgPool, Network_label: &String, Device_address: &String)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -79,7 +79,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_address(pool: &PgPool, Ne
 
 
 pub async fn SELECT_Device_by_Network_id_AND_Device_id(pool: &PgPool, Network_id: i32, Device_id: i32)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -108,7 +108,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_id(pool: &PgPool, Network_id
 
 
 pub async fn SELECT_Device_by_Network_id_AND_Device_label(pool: &PgPool, Network_id: i32, Device_label: &String)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -138,7 +138,7 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_label(pool: &PgPool, Network
 
 
 pub async fn SELECT_Device_by_Network_label_AND_Device_id(pool: &PgPool, Network_label: &String, Device_id: i32)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -168,7 +168,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_id(pool: &PgPool, Network
 
 
 pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Network_label: &String, Device_label: &String)
-  -> Result<Device, QueryError>
+  -> Result<Device, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -197,7 +197,7 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Netw
 }
 
 
-pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Result<Vec<Device>, QueryError>
+pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -223,7 +223,7 @@ pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Res
 }
 
 
-pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &String) -> Result<Vec<Device>, QueryError>
+pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &String) -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -250,7 +250,7 @@ pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &Stri
 
 
 pub async fn SELECT_Devices_by_Network_id_AND_Group_id(pool: &PgPool, Network_id: i32, Group_id: i32)
-  -> Result<Vec<Device>, QueryError>
+  -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -282,7 +282,7 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_id(pool: &PgPool, Network_id
 
 
 pub async fn SELECT_Devices_by_Network_id_AND_Group_label(pool: &PgPool, Network_id: i32, Group_label: &String)
-  -> Result<Vec<Device>, QueryError>
+  -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -314,7 +314,7 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_label(pool: &PgPool, Network
 
 
 pub async fn SELECT_Devices_by_Network_label_AND_Group_id(pool: &PgPool, Network_label: &String, Group_id: i32)
-  -> Result<Vec<Device>, QueryError>
+  -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",
@@ -346,7 +346,7 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_id(pool: &PgPool, Network
 
 
 pub async fn SELECT_Devices_by_Network_label_AND_Group_label(pool: &PgPool, Network_label: &String, Group_label: &String)
-  -> Result<Vec<Device>, QueryError>
+  -> Result<Vec<Device>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "Device"."address", "Device"."label", "Device"."is_reservation", "Device"."is_static", "Device"."mac",

@@ -15,10 +15,10 @@ use sqlx::{query, PgPool, postgres::PgRow, Row};
 
 
 use crate::DBTables::Network::Network;
-use crate::Query::{NewNotFoundError, QueryError};
+use crate::LookupError::{NewNotFoundError, LookupError};
 
 
-pub async fn SELECT_Networks(pool: &PgPool) -> Result<Vec<Network>, QueryError>
+pub async fn SELECT_Networks(pool: &PgPool) -> Result<Vec<Network>, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "auth_value", "label", "gateway", "netmask"
@@ -36,7 +36,7 @@ pub async fn SELECT_Networks(pool: &PgPool) -> Result<Vec<Network>, QueryError>
 }
 
 
-pub async fn SELECT_Network_by_id(pool: &PgPool, id: i32) -> Result<Network, QueryError>
+pub async fn SELECT_Network_by_id(pool: &PgPool, id: i32) -> Result<Network, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "auth_value", "label", "gateway", "netmask"
@@ -54,7 +54,7 @@ pub async fn SELECT_Network_by_id(pool: &PgPool, id: i32) -> Result<Network, Que
 }
 
 
-pub async fn SELECT_Network_by_label(pool: &PgPool, label: &String) -> Result<Network, QueryError>
+pub async fn SELECT_Network_by_label(pool: &PgPool, label: &String) -> Result<Network, LookupError>
 {
 	let query_str: &str = r#"
 	  SELECT "id", "auth_value", "label", "gateway", "netmask"
