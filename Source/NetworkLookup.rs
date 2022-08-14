@@ -35,10 +35,11 @@ use crate::Routes::api;
 async fn main() -> std::io::Result<()>
 {
 	let host: &str = "localhost";
-	let user: &str = "root";
+	let user: &str = env!("NETWORKLOOKUP_DB_USER");
+	let password: &str = env!("NETWORKLOOKUP_DB_PASSWORD");
 	let DB_name: &str = "NetworkLookup";
 
-	let connection_str: String = format!("postgres://{}@{}:5432/{}", user, host, DB_name);
+	let connection_str: String = format!("postgres://{}:{}@{}:5432/{}", user, password, host, DB_name);
 	let connection_pool: PgPool = PgPool::connect(&connection_str).await
 	  .expect("Failed to create Postgres DB connection pool");
 

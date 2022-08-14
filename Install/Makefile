@@ -23,9 +23,9 @@ all:
 	sudo psql -d NetworkLookup -f ../DB/Schema.sql
 	sudo psql -d NetworkLookup -f ../DB/Data.sql
 
-	bash ExportEnvironmentVariables.sh
+	source ExportEnvironmentVariables.sh
 	cd ../Source
-	cargo build
+	$HOME/.cargo/bin/cargo build
 
 	sudo cp target/debug/NetworkLookup /usr/local/bin/
 	sudo cp ../Install/NetworkLookup.service /etc/systemd/system/

@@ -225,5 +225,5 @@ JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 WHERE ("Device"."label", "Network"."label") IN
 (
 	('Bedroom-Curtain', 'Home'),
-	('Livingroom-Curtain', 'Home'),
+	('Livingroom-Curtain', 'Home')
 );

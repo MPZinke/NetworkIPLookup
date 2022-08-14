@@ -12,6 +12,7 @@
 
 
 -- SUMMARY:  List of Networks that are tracked.
+DROP TABLE IF EXISTS "Network" CASCADE;
 CREATE TABLE "Network"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -24,6 +25,7 @@ CREATE TABLE "Network"
 
 -- SUMMARY:  Device Addresses for a Network.
 -- RELATION: <Device>:<Network> N:1.
+DROP TABLE IF EXISTS "Device" CASCADE;
 CREATE TABLE "Device"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -41,6 +43,7 @@ CREATE TABLE "Device"
 
 -- SUMMARY:  Services that runs on the device for a device.
 -- RELATION: <Service>:<Device> N:1.
+DROP TABLE IF EXISTS "Service" CASCADE;
 CREATE TABLE "Service"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -55,6 +58,7 @@ CREATE TABLE "Service"
 -- SUMMARY:  Types of devices.
 -- RELATION: <Group>:<Device> N:M.
 -- REQUIRED VALUES: ['Other', 'Mixed']
+DROP TABLE IF EXISTS "Group" CASCADE;
 CREATE TABLE "Group"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -64,6 +68,7 @@ CREATE TABLE "Group"
 
 -- SUMMARY:  Associates Groups with Devices.
 -- RELATION: <Group>:<Device> N:M.
+DROP TABLE IF EXISTS "Group-Device" CASCADE;
 CREATE TABLE "Group-Device"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
@@ -73,4 +78,3 @@ CREATE TABLE "Group-Device"
 	FOREIGN KEY ("Device.id") REFERENCES "Device"("id"),
 	UNIQUE("Group.id", "Device.id")
 );
-
