@@ -204,9 +204,7 @@ pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Res
 	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
 	    "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
-	  FROM "Group-Device"
-	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
-	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
+	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."id" = $1;
 	"#;
@@ -230,9 +228,7 @@ pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &Stri
 	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
 	    "Network"."label" AS "Network.label", "Network"."gateway" AS "Network.gateway",
 	    "Network"."netmask" AS "Network.netmask"
-	  FROM "Group-Device"
-	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
-	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
+	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."label" = $1;
 	"#;
