@@ -14,6 +14,7 @@
 pub mod Device;
 pub mod Group;
 pub mod Network;
+pub mod Service;
 
 
 use actix_web::{http::header::ContentType, HttpResponse, HttpResponseBuilder};

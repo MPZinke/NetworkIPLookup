@@ -21,6 +21,7 @@ use crate::DBTables::{Group::Group, Network::Network};
 #[derive(Debug, Serialize)]
 pub struct Device
 {
+	pub id: i32,
 	pub address: Option<String>,
 	pub label: String,
 	pub is_reservation: bool,
@@ -35,10 +36,11 @@ impl Device
 {
 	pub fn new(groups: Vec<Group>, row: &PgRow) -> Device
 	{
-		return Device{address: row.get("address"), label: row.get("label"), is_reservation: row.get("is_reservation"),
-		  is_static: row.get("is_static"), mac: row.get("mac"), groups: groups,
-		  Network: Network::new(row.get("Network.id"), row.get("Network.auth_value"), row.get("Network.label"),
-		    row.get("Network.gateway"), row.get("Network.netmask")
+		return Device{id: row.get("Device.id"), address: row.get("address"), label: row.get("Device.label"),
+		  is_reservation: row.get("is_reservation"), is_static: row.get("is_static"), mac: row.get("mac"),
+		  groups: groups,
+		  Network: Network::new(row.get("Network.id"), row.get("auth_value"), row.get("Network.label"),
+		    row.get("gateway"), row.get("netmask")
 		  )
 		};
 	}

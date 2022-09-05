@@ -78,6 +78,9 @@ async fn main() -> std::io::Result<()>
 			  .route("/api/v1.0/network/id/{network_id}/devices/group/id/{group_id}", web::get().to(api::v1_0::network::id::devices::group::id::id))
 			  .route("/api/v1.0/network/id/{network_id}/devices/group/label", web::get().to(api::v1_0::network::id::devices::group::label::index))
 			  .route("/api/v1.0/network/id/{network_id}/devices/group/label/{group_label}", web::get().to(api::v1_0::network::id::devices::group::label::label))
+			  .route("/api/v1.0/network/id/{network_id}/services", web::get().to(api::v1_0::network::id::services::index))
+			  .route("/api/v1.0/network/id/{network_id}/services/label", web::get().to(api::v1_0::network::id::services::label::index))
+			  .route("/api/v1.0/network/id/{network_id}/services/label/{services_label}", web::get().to(api::v1_0::network::id::services::label::label))
 
 			  .route("/api/v1.0/network/label", web::get().to(api::v1_0::network::label::index))
 			  .route("/api/v1.0/network/label/{network_label}", web::get().to(api::v1_0::network::label::label))
@@ -95,6 +98,9 @@ async fn main() -> std::io::Result<()>
 			  .route("/api/v1.0/network/label/{network_label}/devices/group/id/{group_id}", web::get().to(api::v1_0::network::label::devices::group::id::id))
 			  .route("/api/v1.0/network/label/{network_label}/devices/group/label", web::get().to(api::v1_0::network::label::devices::group::label::index))
 			  .route("/api/v1.0/network/label/{network_label}/devices/group/label/{group_label}", web::get().to(api::v1_0::network::label::devices::group::label::label))
+			  .route("/api/v1.0/network/label/{network_label}/services", web::get().to(api::v1_0::network::label::services::index))
+			  .route("/api/v1.0/network/label/{network_label}/services/label", web::get().to(api::v1_0::network::label::services::label::index))
+			  .route("/api/v1.0/network/label/{network_label}/services/label/{services_label}", web::get().to(api::v1_0::network::label::services::label::label))
 		}
 	)
 	  .bind("0.0.0.0:8081")?

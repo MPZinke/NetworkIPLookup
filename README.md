@@ -67,6 +67,9 @@ Additionally, the ping method can be used to determine if a device is active/res
 - `/api/v1.0/network/id/{id}/devices/group/id/{id}`: "List all devices based on group id and network id"
 - `/api/v1.0/network/id/{id}/devices/group/label`: "Queries for devices based on group label and network id"
 - `/api/v1.0/network/id/{id}/devices/group/label/{label}`: "List all devices based on group label and network id"
+- `/api/v1.0/network/id/{id}/services`: "Queries for services based on service and network id"
+- `/api/v1.0/network/id/{id}/services/label`: "Queries for services based on service label and network id"
+- `/api/v1.0/network/id/{id}/services/label/{label}`: "List all services based on service label and network id"
 - `/api/v1.0/network/label`: "Queries for a network based on network label"
 - `/api/v1.0/network/label/{label}`: "Get a network by label"
 - `/api/v1.0/network/label/{label}/device`: "Queries for device based on network label"
@@ -83,6 +86,9 @@ Additionally, the ping method can be used to determine if a device is active/res
 - `/api/v1.0/network/label/{label}/devices/group/id/{id}`: "List all devices based on group id and network label"
 - `/api/v1.0/network/label/{label}/devices/group/label`: "Queries for devices based on group label and network label"
 - `/api/v1.0/network/label/{label}/devices/group/label/{label}`: "List all devices based on group label and network label"
+- `/api/v1.0/network/label/{label}/services`: "Queries for services based on service and network label"
+- `/api/v1.0/network/label/{label}/services/label`: "Queries for services based on service label and network label"
+- `/api/v1.0/network/label/{label}/services/label/{label}`: "List all services based on service label and network label"
 
 
 ## Compiling

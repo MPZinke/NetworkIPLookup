@@ -13,6 +13,7 @@
 
 pub mod device;
 pub mod devices;
+pub mod services;
 
 
 use actix_web::{HttpResponse, http::header::ContentType, web};

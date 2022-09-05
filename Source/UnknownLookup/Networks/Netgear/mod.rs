@@ -81,8 +81,8 @@ impl NetworkInterface for Netgear
 		let mac_regex: String = r"([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}".to_string();
 		let mac: String = regex_and_default_to_empty_string(&mac_regex, section);
 
-		return Device{address: Some(address), label: label, is_reservation: false, is_static: false, mac: Some(mac),
-		  groups: vec![], Network: network.network().clone()};
+		return Device{id: -1, address: Some(address), label: label, is_reservation: false, is_static: false,
+		  mac: Some(mac), groups: vec![], Network: network.network().clone()};
 	}	
 }
 

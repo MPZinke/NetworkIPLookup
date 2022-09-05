@@ -2,7 +2,7 @@
 /***********************************************************************************************************************
 *                                                                                                                      *
 *   created by: MPZinke                                                                                                *
-*   on 2022.05.09                                                                                                      *
+*   on 2022.09.04                                                                                                      *
 *                                                                                                                      *
 *   DESCRIPTION: TEMPLATE                                                                                              *
 *   BUGS:                                                                                                              *
@@ -11,7 +11,19 @@
 ***********************************************************************************************************************/
 
 
-pub mod Group;
-pub mod Device;
-pub mod Network;
-pub mod Service;
+pub mod label;
+
+
+use actix_web::{HttpResponse, http::header::ContentType, web};
+
+
+// `/api/v1.0/network/label/{network_label}/services`
+pub async fn index() -> HttpResponse
+{
+	let body: &str = r#"
+	{
+		"/api/v1.0/network/label/{network_label}/services/label": "Queries for services based on service label and network label"
+	}
+	"#;
+	return HttpResponse::Ok().insert_header(ContentType::json()).body(body);
+}
