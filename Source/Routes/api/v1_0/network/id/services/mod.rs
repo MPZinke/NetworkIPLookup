@@ -14,7 +14,7 @@
 pub mod label;
 
 
-use actix_web::{HttpResponse, http::header::ContentType, web};
+use actix_web::{HttpResponse, http::header::ContentType};
 
 
 // `/api/v1.0/network/label/{network_id}/services`

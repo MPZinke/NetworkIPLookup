@@ -49,6 +49,7 @@ CREATE TABLE "Service"
 	"id" SERIAL NOT NULL PRIMARY KEY,
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"port" SMALLINT NOT NULL DEFAULT 80,
+	"auth_value" TEXT DEFAULT NULL,
 	"Device.id" INT NOT NULL,
 	FOREIGN KEY ("Device.id") REFERENCES "Device"("id"),
 	UNIQUE("label", "Device.id")

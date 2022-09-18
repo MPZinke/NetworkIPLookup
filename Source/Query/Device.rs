@@ -25,8 +25,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_address(pool: &PgPool, Netwo
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."id" = $1
@@ -55,8 +55,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_address(pool: &PgPool, Ne
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."label" = $1
@@ -84,8 +84,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_id(pool: &PgPool, Network_id
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."id" = $1
@@ -113,8 +113,8 @@ pub async fn SELECT_Device_by_Network_id_AND_Device_label(pool: &PgPool, Network
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."id" = $1
@@ -143,8 +143,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_id(pool: &PgPool, Network
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."label" = $1
@@ -173,8 +173,8 @@ pub async fn SELECT_Device_by_Network_label_AND_Device_label(pool: &PgPool, Netw
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."label" = $1
@@ -202,8 +202,8 @@ pub async fn SELECT_Devices_by_Network_id(pool: &PgPool, Network_id: i32) -> Res
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."id" = $1;
@@ -226,8 +226,8 @@ pub async fn SELECT_Devices_by_Network_label(pool: &PgPool, Network_label: &Stri
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Device"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
 	  WHERE "Network"."label" = $1;
@@ -251,8 +251,8 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_id(pool: &PgPool, Network_id
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
@@ -283,8 +283,8 @@ pub async fn SELECT_Devices_by_Network_id_AND_Group_label(pool: &PgPool, Network
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
@@ -315,8 +315,8 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_id(pool: &PgPool, Network
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"
@@ -347,8 +347,8 @@ pub async fn SELECT_Devices_by_Network_label_AND_Group_label(pool: &PgPool, Netw
 	let query_str: &str = r#"
 	  SELECT "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label",
 	    "Device"."is_reservation", "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Group-Device"
 	  JOIN "Device" ON "Group-Device"."Device.id" = "Device"."id"
 	  JOIN "Group" ON "Group-Device"."Group.id" = "Group"."id"

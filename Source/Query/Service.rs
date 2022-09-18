@@ -15,8 +15,8 @@ use sqlx::{query, PgPool, postgres::PgRow, Row};
 
 
 use crate::DBTables::{Service::Service, Group::Group};
-use crate::LookupError::{LookupError, NewNotFoundError};
-use crate::Query::Group::{SELECT_Groups_by_Device_id, SELECT_Groups_by_Device_label};
+use crate::LookupError::LookupError;
+use crate::Query::Group::SELECT_Groups_by_Device_id;
 
 
 pub async fn SELECT_Service_by_Network_id_AND_Service_label(pool: &PgPool, Network_id: i32, Service_label: &String)
@@ -24,10 +24,11 @@ pub async fn SELECT_Service_by_Network_id_AND_Service_label(pool: &PgPool, Netwo
 {
 	let query_str: &str = r#"
 	  SELECT "Service"."id" AS "Service.id", "Service"."label" AS "Service.label", "Service"."port",
+	      "Service"."auth_value" AS "Service.auth_value",
 	    "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label", "Device"."is_reservation",
 	      "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Service"
 	  JOIN "Device" ON "Service"."Device.id" = "Device"."id"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"
@@ -55,10 +56,11 @@ pub async fn SELECT_Device_by_Network_label_AND_Service_label(pool: &PgPool, Net
 {
 	let query_str: &str = r#"
 	  SELECT "Service"."id" AS "Service.id", "Service"."label" AS "Service.label", "Service"."port",
+	      "Service"."auth_value" AS "Service.auth_value",
 	    "Device"."id" AS "Device.id", "Device"."address", "Device"."label" AS "Device.label", "Device"."is_reservation",
 	      "Device"."is_static", "Device"."mac",
-	    "Network"."id" AS "Network.id", "Network"."auth_value", "Network"."label" AS "Network.label",
-	      "Network"."gateway", "Network"."netmask"
+	    "Network"."id" AS "Network.id", "Network"."auth_value" AS "Network.auth_value",
+	      "Network"."label" AS "Network.label", "Network"."gateway", "Network"."netmask"
 	  FROM "Service"
 	  JOIN "Device" ON "Service"."Device.id" = "Device"."id"
 	  JOIN "Network" ON "Device"."Network.id" = "Network"."id"

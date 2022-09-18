@@ -22,6 +22,7 @@ use crate::DBTables::{Device::Device, Group::Group};
 pub struct Service
 {
 	pub id: i32,
+	pub auth_value: Option<String>,
 	pub label: String,
 	pub port: i16,
 	pub device: Device
@@ -33,6 +34,6 @@ impl Service
 	pub fn new(groups: Vec<Group>, row: &PgRow) -> Service
 	{
 		return Service{id: row.get("Service.id"), label: row.get("Service.label"), port: row.get("port"),
-		  device: Device::new(groups, row)};
+		  auth_value: row.get("Service.auth_value"), device: Device::new(groups, row)};
 	}
 }
