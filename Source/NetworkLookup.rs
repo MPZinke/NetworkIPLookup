@@ -34,15 +34,17 @@ use crate::Routes::api;
 #[actix_web::main]
 async fn main() -> std::io::Result<()>
 {
-	let host: &str = "localhost";
+	let host: &str = "host.docker.internal";
 	let user: &str = env!("NETWORKLOOKUP_DB_USER");
 	let password: &str = env!("NETWORKLOOKUP_DB_PASSWORD");
 	let DB_name: &str = "NetworkLookup";
 
+	println!("Connecting to DB");
 	let connection_str: String = format!("postgres://{}:{}@{}:5432/{}", user, password, host, DB_name);
 	let connection_pool: PgPool = PgPool::connect(&connection_str).await
 	  .expect("Failed to create Postgres DB connection pool");
 
+	println!("Initializing Server");
 	HttpServer::new
 	(
 		move ||
