@@ -3,11 +3,18 @@
 build:
 	docker build -t network_lookup \
 	  --build-arg NETWORKLOOKUP_BEARERTOKEN="${NETWORKLOOKUP_BEARERTOKEN}" \
-	  --build-arg NETWORKLOOKUP_BEARERTOKEN="${NETWORKLOOKUP_BEARERTOKEN}" \
 	  --build-arg NETWORKLOOKUP_ROUTER_DOMAIN="${NETWORKLOOKUP_ROUTER_DOMAIN}" \
 	  --build-arg NETWORKLOOKUP_DB_USER="${NETWORKLOOKUP_DB_USER}" \
 	  --build-arg NETWORKLOOKUP_DB_PASSWORD="${NETWORKLOOKUP_DB_PASSWORD}" \
 	 .
+
+
+save:
+	docker save network_lookup > network_lookup_docker.tar
+
+
+load:
+	docker load < network_lookup_docker.tar
 
 
 run:
@@ -21,3 +28,4 @@ clean:
 
 kill:
 	docker stop `docker ps -q`
+	docker builder prune
