@@ -23,6 +23,9 @@ CREATE TABLE "Network"
 );
 
 
+CREATE TYPE BAND AS ENUM ('2.4GHz', '5GHz', 'Ethernet');
+
+
 -- SUMMARY:  Device Addresses for a Network.
 -- RELATION: <Device>:<Network> N:1.
 DROP TABLE IF EXISTS "Device" CASCADE;
@@ -30,15 +33,23 @@ CREATE TABLE "Device"
 (
 	"id" SERIAL NOT NULL PRIMARY KEY,
 	"address" VARCHAR(15) DEFAULT NULL,
+	"band" BAND DEFAULT NULL,
 	"label" VARCHAR(32) NOT NULL DEFAULT '',
 	"is_reservation" BOOL NOT NULL DEFAULT FALSE,
 	"is_static" BOOL NOT NULL DEFAULT FALSE,
 	"mac" CHAR(17) DEFAULT NULL,
 	"Network.id" INT NOT NULL,
 	FOREIGN KEY ("Network.id") REFERENCES "Network"("id"),
-	UNIQUE("address", "Network.id"),
 	UNIQUE("label", "Network.id")
 );
+
+
+CREATE UNIQUE INDEX ON "Device"("address", "Network.id")
+  WHERE "address" IS NOT NULL;
+
+
+CREATE UNIQUE INDEX ON "Device"("mac", "Network.id")
+  WHERE "mac" IS NOT NULL;
 
 
 -- SUMMARY:  Services that runs on the device for a device.
@@ -78,4 +89,17 @@ CREATE TABLE "Group-Device"
 	"Device.id" INT NOT NULL DEFAULT 1,
 	FOREIGN KEY ("Device.id") REFERENCES "Device"("id"),
 	UNIQUE("Group.id", "Device.id")
+);
+
+
+-- SUMMARY:  Device Addresses for a Network.
+-- RELATION: <Device>:<Network> N:1.
+DROP TABLE IF EXISTS "OtherDevice" CASCADE;
+CREATE TABLE "OtherDevice"
+(
+	"id" SERIAL NOT NULL PRIMARY KEY,
+	"address" VARCHAR(15) DEFAULT NULL,
+	"band" BAND DEFAULT NULL,
+	"label" VARCHAR(32) NOT NULL DEFAULT '',
+	"mac" CHAR(17) DEFAULT NULL,
 );
